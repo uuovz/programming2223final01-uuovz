@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  *
- *
+ * @author uuovz
  * Inspired by Thomas Weber
  *
  */
@@ -21,7 +21,11 @@ public class Shell {
     public static final String COMMAND_ALL = ".*";
     public static final String SUFFIX_S = "s";
     public static final String SUFFIX_ES = "es";
-
+    public static final String OUTPUT_PLAYERNUMBER = "How many players?";
+    public static final String OUTPUT_PLAYERNAME = "Enter the name of player %d:";
+    public static final String OUTPUT_INITAL_GOLD = "With how much gold should each player start?";
+    public static final String OUTPUT_FINAL_GOLD = "With how much gold should a player win?";
+    public static final String OUTPUT_SEED = "Please enter the seed used to shuffle the tiles:";
 
     /**
      * The separator between lines of output.
@@ -62,11 +66,6 @@ public class Shell {
         "^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^" + LINE_SEPARATOR
             +
         "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
-    public static final String OUTPUT_PLAYERNUMBER = "How many players?";
-    public static final String OUTPUT_PLAYERNAME = "Enter the name of player %d:";
-    public static final String OUTPUT_INITAL_GOLD = "With how much gold should each player start?";
-    public static final String OUTPUT_FINAL_GOLD = "With how much gold should a player win?";
-    public static final String OUTPUT_SEED = "Please enter the seed used to shuffle the tiles:";
 
     public void start() {
         System.out.println(PIXEL_ART);

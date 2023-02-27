@@ -13,7 +13,7 @@ public final class Main {
     private static final String UTILITY_CLASS_INSTANTIATION = "Utility class cannot be instantiated.";
     private static final String ERROR_COMMAND_ARGUMENTS = "No Command Arguments Allowed.";
 
-    private Main() {throw new IllegalStateException(UTILITY_CLASS_INSTANTIATION); }
+    private Main() { throw new IllegalStateException(UTILITY_CLASS_INSTANTIATION); }
 
     /**
      * Starts the Shell for rover and user input.

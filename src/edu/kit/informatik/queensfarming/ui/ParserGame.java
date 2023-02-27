@@ -193,5 +193,5 @@ public enum ParserGame {
         throw new GameException(EXCEPTION_INVALID_COMMAND);
     }
 
-    abstract String execute(final String userInput, final GameEngine gameEngine);
+    abstract String execute(String userInput, GameEngine gameEngine);
 }
