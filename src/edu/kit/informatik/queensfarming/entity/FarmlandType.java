@@ -39,6 +39,15 @@ public enum FarmlandType {
     private final int capacity;
     private final List<Vegetable> plantableVegetables;
 
+
+    /**
+     *
+     * @param name
+     * @param shortcut
+     * @param factor
+     * @param capacity
+     * @param plantableVegetables
+     */
     FarmlandType(String name, String shortcut, int factor, int capacity, Vegetable... plantableVegetables) {
         this.name = name;
         this.shortcut = shortcut;

@@ -9,6 +9,7 @@ import edu.kit.informatik.queensfarming.util.Countdown;
  * @author uuovz
  * @version 1.0
  */
+
 public class Farmland extends GameTile {
 
     private final FarmlandType farmlandType;
