@@ -1,8 +1,9 @@
 package edu.kit.informatik.queensfarming;
 
 /**
+ * The type Game exception.
  *
- * @author Florian Schwieren
+ * @author uuovz
  * @version 1.0
  */
 public class GameException extends IllegalArgumentException {

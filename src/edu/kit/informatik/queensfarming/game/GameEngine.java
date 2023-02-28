@@ -15,6 +15,11 @@ import edu.kit.informatik.queensfarming.util.Coordinates;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Game engine.
+ * @author uuovz
+ * @version 1.0
+ */
 public class GameEngine implements Executable {
 
     private static final String EXCEPTION_MISSING_FARMTILES = "No farmland tiles left.";
@@ -43,6 +48,11 @@ public class GameEngine implements Executable {
     private final GameRender gameRender;
     private final GameEngineRender gameEngineRender;
 
+    /**
+     * Instantiates a new Game engine.
+     *
+     * @param config the config
+     */
     public GameEngine(Config config) {
         this.executionState = ExecutionState.RUNNING;
         this.config = config;
@@ -60,6 +70,12 @@ public class GameEngine implements Executable {
         this.ioType = IoType.OUTPUT;
     }
 
+    /**
+     * Buy vegetable string.
+     *
+     * @param vegetable the vegetable
+     * @return the string
+     */
     public String buyVegetable(Vegetable vegetable) {
         int rate = this.game.getMarket(vegetable).getRate(vegetable);
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
@@ -71,6 +87,12 @@ public class GameEngine implements Executable {
         return null;
     }
 
+    /**
+     * Buy land string.
+     *
+     * @param coordinates the coordinates
+     * @return the string
+     */
     public String buyLand(Coordinates coordinates) {
         FarmlandDeck farmlandDeck = this.game.getFarmlandDeck();
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
@@ -90,6 +112,12 @@ public class GameEngine implements Executable {
         return null;
     }
 
+    /**
+     * Sell string.
+     *
+     * @param vegetables the vegetables
+     * @return the string
+     */
     public String sell(List<Vegetable> vegetables) {
         int totalSoldVegetables = 0;
         int totalGold = 0;
@@ -115,6 +143,11 @@ public class GameEngine implements Executable {
         return this.gameEngineRender.outputSell(totalSoldVegetables, totalGold);
     }
 
+    /**
+     * Sell string.
+     *
+     * @return the string
+     */
     public String sell() {
         int totalSoldVegetables = 0;
         int totalGold = 0;
@@ -130,6 +163,13 @@ public class GameEngine implements Executable {
         return this.gameEngineRender.outputSell(totalSoldVegetables, totalGold);
     }
 
+    /**
+     * Plant string.
+     *
+     * @param coordinates the coordinates
+     * @param vegetable   the vegetable
+     * @return the string
+     */
     public String plant(Coordinates coordinates, Vegetable vegetable) {
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
         if (!this.ownsThisTile(playersGameBoard, coordinates)) {
@@ -155,6 +195,13 @@ public class GameEngine implements Executable {
         return null;
     }
 
+    /**
+     * Harvest string.
+     *
+     * @param coordinates the coordinates
+     * @param amount      the amount
+     * @return the string
+     */
     public String harvest(Coordinates coordinates, int amount) {
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
         Farmland farmland = playersGameBoard.getFarmland(coordinates);
@@ -181,21 +228,46 @@ public class GameEngine implements Executable {
         return this.gameEngineRender.outputHarvest(vegetable, amount);
     }
 
+    /**
+     * Show market string.
+     *
+     * @return the string
+     */
     public String showMarket() {
         return this.gameRender.showMarket();
     }
 
+    /**
+     * Show barn string.
+     *
+     * @return the string
+     */
     public String showBarn() { return this.gameRender.showBarn(this.currentPlayerIndex); }
 
+    /**
+     * Show board string.
+     *
+     * @return the string
+     */
     public String showBoard() {
         return this.gameRender.showBoard(this.currentPlayerIndex);
     }
 
+    /**
+     * End turn string.
+     *
+     * @return the string
+     */
     public String endTurn() {
         this.switchToNextPlayer();
         return null;
     }
 
+    /**
+     * Gets output stream.
+     *
+     * @return the output stream
+     */
     public String getOutputStream() {
         this.ioType = IoType.INPUT;
         if (this.executionState == ExecutionState.RUNNING) {
@@ -215,6 +287,11 @@ public class GameEngine implements Executable {
         return this.executionState != ExecutionState.EXITED;
     }
 
+    /**
+     * Gets io type.
+     *
+     * @return the io type
+     */
     public IoType getIoType() {
         return this.ioType;
     }

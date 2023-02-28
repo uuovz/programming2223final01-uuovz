@@ -7,8 +7,17 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Barn.
+ *
+ * @author uuovz
+ * @version 1.0
+ */
 public class Barn extends GameTile {
 
+    /**
+     * The constant SHORTCUT.
+     */
     public static final String SHORTCUT = "B";
     private static final int COUNTDOWN_FREQUENCY = 6;
     private static final int MINIMUM_COUNTDOWN = 0;
@@ -19,6 +28,12 @@ public class Barn extends GameTile {
     private int goldStock;
 
 
+    /**
+     * Instantiates a new Barn.
+     *
+     * @param coordinates the coordinates
+     * @param initialGold the initial gold
+     */
     public Barn(Coordinates coordinates, int initialGold) {
         super(coordinates);
         this.initializeValues();
@@ -33,16 +48,33 @@ public class Barn extends GameTile {
         }
     }
 
+    /**
+     * Gets stock of.
+     *
+     * @param vegetable the vegetable
+     * @return the stock of
+     */
     public int getStockOf(Vegetable vegetable) {
         return this.stock.get(vegetable);
     }
 
+    /**
+     * Reduce stock of.
+     *
+     * @param vegetable the vegetable
+     */
     public void reduceStockOf(Vegetable vegetable) {
         this.stock.put(vegetable, this.stock.get(vegetable) - 1);
         if (!this.vegetableInStock()) {
             this.countdown.deactivate();
         }
     }
+
+    /**
+     * Add stock of.
+     *
+     * @param vegetable the vegetable
+     */
     public void addStockOf(Vegetable vegetable) {
         if (!this.vegetableInStock()) {
             this.countdown.start();
@@ -50,10 +82,20 @@ public class Barn extends GameTile {
         this.stock.put(vegetable, this.stock.get(vegetable) + 1);
     }
 
+    /**
+     * Gets spoiled vegetables.
+     *
+     * @return the spoiled vegetables
+     */
     public int getSpoiledVegetables() {
         return this.spoiledVegetables;
     }
 
+    /**
+     * Vegetable in stock boolean.
+     *
+     * @return the boolean
+     */
     public boolean vegetableInStock() {
         for (Vegetable vegetable: EnumSet.allOf(Vegetable.class)) {
             if (this.stock.get(vegetable) > 0) {
@@ -63,18 +105,38 @@ public class Barn extends GameTile {
         return false;
     }
 
+    /**
+     * Gets gold stock.
+     *
+     * @return the gold stock
+     */
     public int getGoldStock() {
         return this.goldStock;
     }
 
+    /**
+     * Add gold stock.
+     *
+     * @param amount the amount
+     */
     public void addGoldStock(int amount) {
         this.goldStock += amount;
     }
 
+    /**
+     * Reduce gold stock.
+     *
+     * @param amount the amount
+     */
     public void reduceGoldStock(int amount) {
         this.goldStock -= amount;
     }
 
+    /**
+     * Gets countdown.
+     *
+     * @return the countdown
+     */
     public Countdown getCountdown() {
         return this.countdown;
     }
@@ -89,6 +151,7 @@ public class Barn extends GameTile {
             this.spoiledVegetables = 0;
         }
     }
+
     private void deleteAllVegetables() {
         for (Vegetable vegetable: EnumSet.allOf(Vegetable.class)) {
             this.spoiledVegetables += this.stock.get(vegetable);

@@ -17,6 +17,7 @@ public final class Main {
 
     /**
      * Starts the Shell for rover and user input.
+     *
      * @param args have to be empty
      */
     public static void main(String[] args) {

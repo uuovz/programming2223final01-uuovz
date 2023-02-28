@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+/**
+ * The type Game engine render.
+ *
+ * @author uuovz
+ * @version 1.0
+ */
 public class GameEngineRender {
 
     private static final String MESSAGE_TEMPLATE_PURCHASE = "You have bought a %s for %d gold.";
@@ -28,29 +34,69 @@ public class GameEngineRender {
     private final Config config;
     private final Game game;
 
+    /**
+     * Instantiates a new Game engine render.
+     *
+     * @param config the config
+     * @param game   the game
+     */
     public GameEngineRender(Config config, Game game) {
         this.config = config;
         this.game = game;
     }
 
+    /**
+     * Output buy vegetable string.
+     *
+     * @param vegetableName the vegetable name
+     * @param rate          the rate
+     * @return the string
+     */
     public String outputBuyVegetable(String vegetableName, int rate) {
         return String.format(MESSAGE_TEMPLATE_PURCHASE, vegetableName, rate);
     }
 
+    /**
+     * Output buy land string.
+     *
+     * @param farmlandName the farmland name
+     * @param rate         the rate
+     * @return the string
+     */
     public String outputBuyLand(String farmlandName, int rate) {
         return String.format(MESSAGE_TEMPLATE_PURCHASE, farmlandName, rate);
     }
 
+    /**
+     * Output sell string.
+     *
+     * @param totalSoldVegetables the total sold vegetables
+     * @param totalGold           the total gold
+     * @return the string
+     */
     public String outputSell(int totalSoldVegetables, int totalGold) {
         String suffix = getSuffix(null, totalSoldVegetables);
         return String.format(MESSAGE_TEMPLATE_SALE, totalSoldVegetables, suffix, totalGold);
     }
 
+    /**
+     * Output harvest string.
+     *
+     * @param vegetable the vegetable
+     * @param amount    the amount
+     * @return the string
+     */
     public String outputHarvest(Vegetable vegetable, int amount) {
         String suffix = getSuffix(vegetable, amount);
         return String.format(MESSAGE_TEMPLATE_HARVEST, amount, vegetable.getName(), suffix);
     }
 
+    /**
+     * Print before turn string.
+     *
+     * @param currentPlayerIndex the current player index
+     * @return the string
+     */
     public String printBeforeTurn(int currentPlayerIndex) {
         StringBuilder stringBuilder = new StringBuilder();
         String playerName = this.config.getPlayerName(currentPlayerIndex);
@@ -72,6 +118,11 @@ public class GameEngineRender {
         return stringBuilder.toString();
     }
 
+    /**
+     * Print game result string.
+     *
+     * @return the string
+     */
     public String printGameResult() {
         StringBuilder stringBuilder = new StringBuilder();
         List<Integer> winners = new ArrayList<>();
@@ -119,6 +170,13 @@ public class GameEngineRender {
         return stringBuilder.toString();
     }
 
+    /**
+     * Gets suffix.
+     *
+     * @param vegetable the vegetable
+     * @param amount    the amount
+     * @return the suffix
+     */
     public static String getSuffix(Vegetable vegetable, int amount) {
         String suffix = Shell.EMPTY_STRING;
         if (amount == 0) {

@@ -10,13 +10,22 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The enum Parser game.
+ */
 public enum ParserGame {
+    /**
+     * The Quit.
+     */
     QUIT("^quit") {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             gameEngine.quit();
             return null;
         }
     },
+    /**
+     * The Buy vegetable.
+     */
     BUY_VEGETABLE("^buy vegetable" + Shell.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
@@ -27,6 +36,9 @@ public enum ParserGame {
             return gameEngine.buyVegetable(ParserGame.getVegetable(arguments[0]));
         }
     },
+    /**
+     * The Buy land.
+     */
     BUY_LAND("^buy land" + Shell.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
@@ -42,6 +54,9 @@ public enum ParserGame {
             return gameEngine.buyLand(coordinates);
         }
     },
+    /**
+     * The Sell.
+     */
     SELL("^sell" + Shell.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
@@ -61,6 +76,9 @@ public enum ParserGame {
             return gameEngine.sell(vegetables);
         }
     },
+    /**
+     * The Plant.
+     */
     PLANT("^plant" + Shell.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
@@ -78,6 +96,9 @@ public enum ParserGame {
             return gameEngine.plant(coordinates, vegetable);
         }
     },
+    /**
+     * The Harvest.
+     */
     HARVEST("^harvest" + Shell.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
@@ -95,21 +116,33 @@ public enum ParserGame {
             return gameEngine.harvest(coordinates, amount);
         }
     },
+    /**
+     * The Show market.
+     */
     SHOW_MARKET("^show market") {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             return gameEngine.showMarket();
         }
     },
+    /**
+     * The Show barn.
+     */
     SHOW_BARN("^show barn") {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             return gameEngine.showBarn();
         }
     },
+    /**
+     * The Show board.
+     */
     SHOW_BOARD("^show board") {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             return gameEngine.showBoard();
         }
     },
+    /**
+     * The End turn.
+     */
     END_TURN("^end turn") {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             return gameEngine.endTurn();
@@ -183,6 +216,13 @@ public enum ParserGame {
         }
     }
 
+    /**
+     * Parse command string.
+     *
+     * @param userInput  the user input
+     * @param gameEngine the game engine
+     * @return the string
+     */
     public static String parseCommand(final String userInput, final GameEngine gameEngine) {
         for (final ParserGame command : values()) {
             final Matcher matcher = command.pattern.matcher(userInput);
@@ -193,5 +233,12 @@ public enum ParserGame {
         throw new GameException(EXCEPTION_INVALID_COMMAND);
     }
 
+    /**
+     * Execute string.
+     *
+     * @param userInput  the user input
+     * @param gameEngine the game engine
+     * @return the string
+     */
     abstract String execute(String userInput, GameEngine gameEngine);
 }

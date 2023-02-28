@@ -6,6 +6,11 @@ import edu.kit.informatik.queensfarming.game.Config;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Parser config.
+ * @author uuovz
+ * @version 1.0
+ */
 public class ParserConfig {
 
     private static final String EXCEPTION_INVALID_NUMBER = "Please enter a natural number bigger zero.";
@@ -20,12 +25,23 @@ public class ParserConfig {
     private int currentPlayer = 1;
 
 
+    /**
+     * Instantiates a new Parser config.
+     *
+     * @param config the config
+     */
     public ParserConfig(Config config) {
         this.config = config;
         this.active = false;
         this.currentIoType = IoType.OUTPUT;
     }
 
+    /**
+     * Parse config string.
+     *
+     * @param userInput the user input
+     * @return the string
+     */
     public String parseConfig(String userInput) {
         final String output;
         switch (steps) {
@@ -39,6 +55,11 @@ public class ParserConfig {
         return output;
     }
 
+    /**
+     * Gets output stream.
+     *
+     * @return the output stream
+     */
     public String getOutputStream() {
         final String output;
         switch (steps) {
@@ -107,10 +128,20 @@ public class ParserConfig {
         return null;
     }
 
+    /**
+     * Gets current io type.
+     *
+     * @return the current io type
+     */
     public IoType getCurrentIoType() {
         return this.currentIoType;
     }
 
+    /**
+     * Is active boolean.
+     *
+     * @return the boolean
+     */
     public boolean isActive() { return this.active; }
 
     private void changeIoType() {
@@ -147,6 +178,7 @@ public class ParserConfig {
             this.active = true;
         }
     }
+
     private void nextPlayerName() {
         if (this.currentPlayer < this.config.getPlayerCount()) {
             this.currentPlayer += 1;

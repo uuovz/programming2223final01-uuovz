@@ -7,10 +7,10 @@ import edu.kit.informatik.queensfarming.game.GameEngine;
 import java.util.Scanner;
 
 /**
+ * The type Shell.
  *
- * @author uuovz
- * Inspired by Thomas Weber
- *
+ * @author uuovz  Inspired by Thomas Weber
+ * @version 1.0
  */
 public class Shell {
 
@@ -18,13 +18,37 @@ public class Shell {
      * The separator between a command and the parameters.
      */
     public static final String COMMAND_SEPARATOR = " ";
+    /**
+     * The constant COMMAND_ALL.
+     */
     public static final String COMMAND_ALL = ".*";
+    /**
+     * The constant SUFFIX_S.
+     */
     public static final String SUFFIX_S = "s";
+    /**
+     * The constant SUFFIX_ES.
+     */
     public static final String SUFFIX_ES = "es";
+    /**
+     * The constant OUTPUT_PLAYERNUMBER.
+     */
     public static final String OUTPUT_PLAYERNUMBER = "How many players?";
+    /**
+     * The constant OUTPUT_PLAYERNAME.
+     */
     public static final String OUTPUT_PLAYERNAME = "Enter the name of player %d:";
+    /**
+     * The constant OUTPUT_INITAL_GOLD.
+     */
     public static final String OUTPUT_INITAL_GOLD = "With how much gold should each player start?";
+    /**
+     * The constant OUTPUT_FINAL_GOLD.
+     */
     public static final String OUTPUT_FINAL_GOLD = "With how much gold should a player win?";
+    /**
+     * The constant OUTPUT_SEED.
+     */
     public static final String OUTPUT_SEED = "Please enter the seed used to shuffle the tiles:";
 
     /**
@@ -36,12 +60,18 @@ public class Shell {
      */
     public static final String EMPTY_STRING = "";
 
+    /**
+     * The constant BLANK_STRING.
+     */
     public static final String BLANK_STRING = " ";
     /**
      * The start of an output string for a failed operation.
      */
     public static final String ERROR_START = "Error: ";
 
+    /**
+     * The constant ERROR_END.
+     */
     public static final String ERROR_END = " Please try again!";
     private static final String PIXEL_ART
         =
@@ -67,6 +97,9 @@ public class Shell {
             +
         "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
 
+    /**
+     * Start.
+     */
     public void start() {
         System.out.println(PIXEL_ART);
         Config config = new Config();

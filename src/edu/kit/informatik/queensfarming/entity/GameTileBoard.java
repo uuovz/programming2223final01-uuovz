@@ -5,6 +5,12 @@ import edu.kit.informatik.queensfarming.util.Coordinates;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Game tile board.
+ *
+ * @author uuovz
+ * @version 1.0
+ */
 public class GameTileBoard implements Roundable {
     private final List<Farmland> farmlandsTiles = new ArrayList<>();
     private final Barn barn;
@@ -13,6 +19,11 @@ public class GameTileBoard implements Roundable {
     private int maxYCoordinate = 1;
 
 
+    /**
+     * Instantiates a new Game tile board.
+     *
+     * @param initalGold the inital gold
+     */
     public GameTileBoard(int initalGold) {
         this.barn = new Barn(
             new Coordinates(Coordinates.ORIGIN_COORDINATES, Coordinates.ORIGIN_COORDINATES), initalGold
@@ -25,6 +36,11 @@ public class GameTileBoard implements Roundable {
             new Coordinates(Coordinates.ORIGIN_COORDINATES, this.maxYCoordinate), FarmlandType.FIELD));
     }
 
+    /**
+     * Gets game tiles.
+     *
+     * @return the game tiles
+     */
     public List<GameTile> getGameTiles() {
         final List<GameTile> gameTiles = new ArrayList<>();
         gameTiles.add(barn);
@@ -32,6 +48,12 @@ public class GameTileBoard implements Roundable {
         return gameTiles;
     }
 
+    /**
+     * Gets game tile.
+     *
+     * @param coordinates the coordinates
+     * @return the game tile
+     */
     public GameTile getGameTile(Coordinates coordinates) {
         if (coordinates.compareTo(Coordinates.ORIGIN) == 0) {
             return this.barn;
@@ -44,6 +66,12 @@ public class GameTileBoard implements Roundable {
         return null;
     }
 
+    /**
+     * Gets farmland.
+     *
+     * @param coordinates the coordinates
+     * @return the farmland
+     */
     public Farmland getFarmland(Coordinates coordinates) {
         for (Farmland farmland: farmlandsTiles) {
             if (farmland.getCoordinates().compareTo(coordinates) == 0) {
@@ -53,11 +81,21 @@ public class GameTileBoard implements Roundable {
         return null;
     }
 
+    /**
+     * Gets barn.
+     *
+     * @return the barn
+     */
     public Barn getBarn() {
         return this.barn;
 
     }
 
+    /**
+     * Add farmland.
+     *
+     * @param farmland the farmland
+     */
     public void addFarmland(Farmland farmland) {
         this.farmlandsTiles.add(farmland);
         int xCoordinate = farmland.getCoordinates().getXCoordinate();
@@ -75,10 +113,20 @@ public class GameTileBoard implements Roundable {
         }
     }
 
+    /**
+     * Gets spoiled vegetable amount.
+     *
+     * @return the spoiled vegetable amount
+     */
     public int getSpoiledVegetableAmount() {
         return this.barn.getSpoiledVegetables();
     }
 
+    /**
+     * Gets grown vegetable amount.
+     *
+     * @return the grown vegetable amount
+     */
     public int getGrownVegetableAmount() {
         int sum = 0;
         for (Farmland farmland: this.farmlandsTiles) {
@@ -87,10 +135,33 @@ public class GameTileBoard implements Roundable {
         return sum;
     }
 
+    /**
+     * Gets max x coordinate.
+     *
+     * @return the max x coordinate
+     */
     public int getMaxXCoordinate() { return this.maxXCoordinate; }
+
+    /**
+     * Gets min x coordinate.
+     *
+     * @return the min x coordinate
+     */
     public int getMinXCoordinate() { return this.minXCoordinate; }
+
+    /**
+     * Gets max y coordinate.
+     *
+     * @return the max y coordinate
+     */
     public int getMaxYCoordinate() { return this.maxYCoordinate; }
 
+    /**
+     * Gets rate.
+     *
+     * @param coordinates the coordinates
+     * @return the rate
+     */
     public static int getRate(Coordinates coordinates) {
         return 10 * ((Math.abs(coordinates.getXCoordinate()) + Math.abs(coordinates.getYCoordinate())) - 1);
     }

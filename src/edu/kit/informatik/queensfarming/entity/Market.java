@@ -3,6 +3,12 @@ package edu.kit.informatik.queensfarming.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Market.
+ *
+ * @author uuovz
+ * @version 1.0
+ */
 public class Market {
     private static final int DIFFERENCE = 2;
     private static final int MAX_PHASE = 4;
@@ -12,6 +18,11 @@ public class Market {
     private int ratePhase = 2;
     private int sellDifference = 0;
 
+    /**
+     * Instantiates a new Market.
+     *
+     * @param marketType the market type
+     */
     public Market(MarketType marketType) {
         for (Vegetable vegetable: marketType.getPair()) {
             vegetablePair.add(vegetable);
@@ -19,6 +30,9 @@ public class Market {
         this.rates = marketType.getRates();
     }
 
+    /**
+     * Re calculate.
+     */
     public void reCalculate() {
         while (this.sellDifference >= DIFFERENCE || this.sellDifference <= -DIFFERENCE) {
             if (this.sellDifference >= DIFFERENCE) {
@@ -32,6 +46,11 @@ public class Market {
         this.sellDifference = 0;
     }
 
+    /**
+     * Sell.
+     *
+     * @param vegetable the vegetable
+     */
     public void sell(Vegetable vegetable) {
         if (this.getIndexOfVegetable(vegetable) == 0) {
             this.sellDifference += 1;
@@ -40,9 +59,22 @@ public class Market {
         }
     }
 
+    /**
+     * Sellable boolean.
+     *
+     * @param vegetable the vegetable
+     * @return the boolean
+     */
     public boolean sellable(Vegetable vegetable) {
         return this.vegetablePair.contains(vegetable);
     }
+
+    /**
+     * Gets rate.
+     *
+     * @param vegetable the vegetable
+     * @return the rate
+     */
     public int getRate(Vegetable vegetable) {
         return this.rates[this.ratePhase][this.getIndexOfVegetable(vegetable)];
     }

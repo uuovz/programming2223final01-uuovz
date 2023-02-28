@@ -1,12 +1,9 @@
-/*
- * Copyright (c) 2021, KASTEL. All rights reserved.
- */
-
 package edu.kit.informatik.queensfarming.game;
 
 /**
  * Classes implementing this interface can be used for a command line interface.
  *
+ * @author uuovz
  * @author Thomas Weber
  * @version 1.0
  */

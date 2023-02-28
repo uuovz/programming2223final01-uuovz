@@ -15,6 +15,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The type Game render.
+ *
+ * @author uuovz
+ * @version 1.0
+ */
 public class GameRender {
 
     private static final String OUTPUT_BARN = "Barn";
@@ -33,10 +39,21 @@ public class GameRender {
 
     private final Game game;
 
+    /**
+     * Instantiates a new Game render.
+     *
+     * @param game the game
+     */
     public GameRender(Game game) {
         this.game = game;
     }
 
+    /**
+     * Show barn string.
+     *
+     * @param gameBoardIndex the game board index
+     * @return the string
+     */
     public String showBarn(int gameBoardIndex) {
         Barn barn = this.game.getGameTileBoard(gameBoardIndex).getBarn();
         Countdown countdown = barn.getCountdown();
@@ -65,7 +82,8 @@ public class GameRender {
                 int quantity = barn.getStockOf(vegetable);
                 suffix = vegetable.equals(Vegetable.TOMATO) ? SUFFIX_ES : SUFFIX_S;
                 stringBuilder.append(
-                        String.format("%-" + (maxNameLength + 1) + "s", (vegetable.getName() + suffix) + LABEL_SEPERATOR)
+                        String.format("%-" + (maxNameLength + 1) + "s", (vegetable.getName() + suffix)
+                            + LABEL_SEPERATOR)
                     )
                     .append(String.format("%" + (maxQuantityLength + 1) + "d", quantity))
                     .append(System.lineSeparator());
@@ -109,6 +127,12 @@ public class GameRender {
     }
 
 
+    /**
+     * Show board string.
+     *
+     * @param gameBoardIndex the game board index
+     * @return the string
+     */
     public String showBoard(int gameBoardIndex) {
         GameTileBoard gameTileBoard = this.game.getGameTileBoard(gameBoardIndex);
         int maxXCoordinate = gameTileBoard.getMaxXCoordinate();
@@ -189,6 +213,11 @@ public class GameRender {
         }
     }
 
+    /**
+     * Show market string.
+     *
+     * @return the string
+     */
     public String showMarket() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(
