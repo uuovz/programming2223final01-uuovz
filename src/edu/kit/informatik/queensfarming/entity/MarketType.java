@@ -23,6 +23,12 @@ public enum MarketType {
     private final List<Vegetable> pair;
     private final int[][] rates;
 
+    /**
+     *
+     * @param vegetableA
+     * @param vegetableB
+     * @param rates
+     */
     MarketType(Vegetable vegetableA, Vegetable vegetableB, int[][] rates) {
         this.pair = new ArrayList<>();
         this.pair.add(vegetableA);

@@ -15,14 +15,6 @@ import java.util.Scanner;
 public class Shell {
 
     /**
-     * The separator between a command and the parameters.
-     */
-    public static final String COMMAND_SEPARATOR = " ";
-    /**
-     * The constant COMMAND_ALL.
-     */
-    public static final String COMMAND_ALL = ".*";
-    /**
      * The constant SUFFIX_S.
      */
     public static final String SUFFIX_S = "s";
@@ -30,31 +22,6 @@ public class Shell {
      * The constant SUFFIX_ES.
      */
     public static final String SUFFIX_ES = "es";
-    /**
-     * The constant OUTPUT_PLAYERNUMBER.
-     */
-    public static final String OUTPUT_PLAYERNUMBER = "How many players?";
-    /**
-     * The constant OUTPUT_PLAYERNAME.
-     */
-    public static final String OUTPUT_PLAYERNAME = "Enter the name of player %d:";
-    /**
-     * The constant OUTPUT_INITAL_GOLD.
-     */
-    public static final String OUTPUT_INITAL_GOLD = "With how much gold should each player start?";
-    /**
-     * The constant OUTPUT_FINAL_GOLD.
-     */
-    public static final String OUTPUT_FINAL_GOLD = "With how much gold should a player win?";
-    /**
-     * The constant OUTPUT_SEED.
-     */
-    public static final String OUTPUT_SEED = "Please enter the seed used to shuffle the tiles:";
-
-    /**
-     * The separator between lines of output.
-     */
-    public static final String LINE_SEPARATOR = System.lineSeparator();
     /**
      * An empty string used for some outputs.
      */
@@ -72,28 +39,28 @@ public class Shell {
     /**
      * The constant ERROR_END.
      */
-    public static final String ERROR_END = " Please try again!";
+    private static final String ERROR_END = " Please try again!";
     private static final String PIXEL_ART
         =
-        "                           _.-^-._    .--.    " + LINE_SEPARATOR
+        "                           _.-^-._    .--.    " + System.lineSeparator()
             +
-        "                        .-'   _   '-. |__|    " + LINE_SEPARATOR
+        "                        .-'   _   '-. |__|    " + System.lineSeparator()
             +
-        "                       /     |_|     \\|  |    " + LINE_SEPARATOR
+        "                       /     |_|     \\|  |    " + System.lineSeparator()
             +
-        "                      /               \\  |    " + LINE_SEPARATOR
+        "                      /               \\  |    " + System.lineSeparator()
             +
-        "                     /|     _____     |\\ |    " + LINE_SEPARATOR
+        "                     /|     _____     |\\ |    " + System.lineSeparator()
             +
-        "                      |    |==|==|    |  |    " + LINE_SEPARATOR
+        "                      |    |==|==|    |  |    " + System.lineSeparator()
             +
-        "  |---|---|---|---|---|    |--|--|    |  |    " + LINE_SEPARATOR
+        "  |---|---|---|---|---|    |--|--|    |  |    " + System.lineSeparator()
             +
-        "  |---|---|---|---|---|    |==|==|    |  |    " + LINE_SEPARATOR
+        "  |---|---|---|---|---|    |==|==|    |  |    " + System.lineSeparator()
             +
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + LINE_SEPARATOR
+        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + System.lineSeparator()
             +
-        "^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^" + LINE_SEPARATOR
+        "^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^" + System.lineSeparator()
             +
         "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
 

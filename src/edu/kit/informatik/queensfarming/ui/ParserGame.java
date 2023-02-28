@@ -26,20 +26,20 @@ public enum ParserGame {
     /**
      * The Buy vegetable.
      */
-    BUY_VEGETABLE("^buy vegetable" + Shell.COMMAND_ALL) {
+    BUY_VEGETABLE("^buy vegetable" + ParserGame.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
             if (arguments == null || arguments.length != ARGUMENTS_BUY_VEGETABLE) {
                 throw new GameException(EXCEPTION_ONE_NAME_EXPECTED);
             }
             Vegetable vegetable = ParserGame.getVegetable(arguments[0]);
-            return gameEngine.buyVegetable(ParserGame.getVegetable(arguments[0]));
+            return gameEngine.buyVegetable(vegetable);
         }
     },
     /**
      * The Buy land.
      */
-    BUY_LAND("^buy land" + Shell.COMMAND_ALL) {
+    BUY_LAND("^buy land" + ParserGame.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
             if (arguments == null || arguments.length != ARGUMENTS_BUY_LAND) {
@@ -57,7 +57,7 @@ public enum ParserGame {
     /**
      * The Sell.
      */
-    SELL("^sell" + Shell.COMMAND_ALL) {
+    SELL("^sell" + ParserGame.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
 
@@ -79,7 +79,7 @@ public enum ParserGame {
     /**
      * The Plant.
      */
-    PLANT("^plant" + Shell.COMMAND_ALL) {
+    PLANT("^plant" + ParserGame.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
             final List<Integer> coordinateNumeric = new ArrayList<>();
@@ -99,7 +99,7 @@ public enum ParserGame {
     /**
      * The Harvest.
      */
-    HARVEST("^harvest" + Shell.COMMAND_ALL) {
+    HARVEST("^harvest" + ParserGame.COMMAND_ALL) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             String[] arguments = ParserGame.splitArguments(ParserGame.getUserArguments(this, userInput));
             if (arguments == null || arguments.length != ARGUMENTS_HARVEST) {
@@ -149,6 +149,8 @@ public enum ParserGame {
         }
     };
 
+    private static final String COMMAND_SEPARATOR = " ";
+    private static final String COMMAND_ALL = ".*";
     private static final int ARGUMENTS_BUY_VEGETABLE = 1;
     private static final int ARGUMENTS_BUY_LAND = 2;
     private static final int ARGUMENTS_PLANT = 3;
@@ -168,6 +170,10 @@ public enum ParserGame {
     private final String uICommand;
     private final Pattern pattern;
 
+    /**
+     *
+     * @param uICommand
+     */
     ParserGame(String uICommand) {
         this.uICommand = uICommand;
         this.pattern = Pattern.compile(uICommand);
@@ -179,16 +185,16 @@ public enum ParserGame {
             throw new GameException(EXCEPTION_BLANK_CLOSING);
         }
 
-        return userInput.replaceAll(command.uICommand.replace(Shell.COMMAND_ALL, Shell.EMPTY_STRING),
+        return userInput.replaceAll(command.uICommand.replace(COMMAND_ALL, Shell.EMPTY_STRING),
             Shell.EMPTY_STRING);
     }
 
     private static String[] splitArguments(String arguments) {
         if (!arguments.isEmpty()) {
-            if (!String.valueOf(arguments.charAt(0)).equals(Shell.COMMAND_SEPARATOR)) {
+            if (!String.valueOf(arguments.charAt(0)).equals(COMMAND_SEPARATOR)) {
                 throw new GameException(EXCEPTION_SEPERATE_BLANKS);
             }
-            return arguments.substring(1).split(Shell.COMMAND_SEPARATOR);
+            return arguments.substring(1).split(COMMAND_SEPARATOR);
         }
         return null;
     }

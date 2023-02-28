@@ -25,6 +25,12 @@ public enum Vegetable {
     private final String shortcut;
     private final int growFrequency;
 
+    /**
+     *
+     * @param name
+     * @param shortcut
+     * @param growFrequency
+     */
     Vegetable(String name, String shortcut, int growFrequency) {
         this.name = name;
         this.shortcut = shortcut;
