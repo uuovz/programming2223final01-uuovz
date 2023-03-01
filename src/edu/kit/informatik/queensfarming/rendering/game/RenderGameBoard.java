@@ -8,7 +8,7 @@ import edu.kit.informatik.queensfarming.game.Game;
 import edu.kit.informatik.queensfarming.util.Coordinates;
 
 /**
- *
+ * A class that extends the abstract class `RenderGame` and provides a method to render the game board as a string.
  * @author uuovz
  * @version 1.0
  */
@@ -24,12 +24,13 @@ public class RenderGameBoard extends RenderGame {
     private static final String TEMPLATE_FARMLAND_LOWER_A = " %s %s ";
     private static final String TEMPLATE_FARMLAND_LOWER_B = " %s %s";
     private static final String TEMPLATE_FARMLAND_LOWER_C = "%s %s";
+    private static final String SHORTCUT = "B";
 
     private int index = 0;
 
     /**
-     *
-     * @param game
+     * Creates a new `RenderGameBoard` instance with the specified game.
+     * @param game the `Game` instance to render.
      */
     public RenderGameBoard(Game game) {
         super(game);
@@ -37,13 +38,12 @@ public class RenderGameBoard extends RenderGame {
 
 
     /**
-     * Show board string.
-     *
-     * @return the string
+     * Renders the game board as a string.
+     * @return a string representing the game board.
      */
     @Override
     public String render() {
-        GameTileBoard gameTileBoard = this.game.getGameTileBoard(this.index);
+        GameTileBoard gameTileBoard = this.getGame().getGameTileBoard(this.index);
         int maxXCoordinate = gameTileBoard.getMaxXCoordinate();
         int maxYCoordinate = gameTileBoard.getMaxYCoordinate();
         int minXCoordinate = gameTileBoard.getMinXCoordinate();
@@ -60,7 +60,7 @@ public class RenderGameBoard extends RenderGame {
                     if (left != null || right != null) {
                         stringBuilder.append(BARRIER);
                     } else {
-                        stringBuilder.append(LABEL_BLANK);
+                        stringBuilder.append(BLANK_STRING);
                     }
                     barrier = false;
                 } else {
@@ -76,7 +76,7 @@ public class RenderGameBoard extends RenderGame {
                             barnRow(yIndex, gameTileBoard.getBarn())
                         );
                     } else {
-                        stringBuilder.append(LABEL_BLANK.repeat(TILE_WIDTH));
+                        stringBuilder.append(BLANK_STRING.repeat(TILE_WIDTH));
                     }
                     xCoordinate++;
                     barrier = true;
@@ -94,9 +94,9 @@ public class RenderGameBoard extends RenderGame {
         if (type == 1) {
             int remainingTurns = barn.getCountdown().getRemainingTurns();
             String remainingTurnsDisplay = remainingTurns > 0 ? String.valueOf(remainingTurns) : LABEL_NO_COUNTDOWN;
-            return String.format(TEMPLATE_BARN_MIDDLE,  Barn.SHORTCUT, remainingTurnsDisplay);
+            return String.format(TEMPLATE_BARN_MIDDLE,  SHORTCUT, remainingTurnsDisplay);
         }
-        return LABEL_BLANK.repeat(TILE_WIDTH);
+        return BLANK_STRING.repeat(TILE_WIDTH);
     }
 
     private String farmlandRow(int tileRowIndex, Farmland farmland) {
@@ -107,7 +107,7 @@ public class RenderGameBoard extends RenderGame {
         }
         if (type == 1) {
             String vegetableShortcut = farmland.getPlantedVegetable() != null
-                ? farmland.getPlantedVegetable().getShortcut() : LABEL_BLANK;
+                ? farmland.getPlantedVegetable().getShortcut() : BLANK_STRING;
             return String.format(TEMPLATE_FARMLAND_MIDDLE, vegetableShortcut);
         }
         String shortcut = farmland.getFarmlandType().getShortcut();
@@ -124,8 +124,8 @@ public class RenderGameBoard extends RenderGame {
     }
 
     /**
-     *
-     * @param index
+     * Sets the index of the game tile board to render.
+     * @param index the index of the game tile board.
      */
     public void setIndex(int index) {
         this.index = index;

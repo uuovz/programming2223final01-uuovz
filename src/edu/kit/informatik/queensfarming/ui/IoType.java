@@ -1,15 +1,15 @@
 package edu.kit.informatik.queensfarming.ui;
 
 /**
- * The enum Io type.
+ * An enumeration representing the I/O type.
  */
 public enum IoType {
     /**
-     * Input io type.
+     * Represents input type.
      */
     INPUT,
     /**
-     * Output io type.
+     * Represents output type.
      */
     OUTPUT
 

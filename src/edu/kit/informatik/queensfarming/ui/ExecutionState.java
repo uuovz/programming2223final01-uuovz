@@ -1,7 +1,7 @@
 package edu.kit.informatik.queensfarming.ui;
 
 /**
- * The different execution states the application can go through.
+ * An enum representing the different execution states that the application can go through.
  *
  * @author uuovz
  * @version 1.0

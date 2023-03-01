@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Config.
+ * The Config class represents the configuration of a Queens Farming Game.
  *
  * @author uuovz
  * @version 1.0
@@ -13,97 +13,97 @@ public class Config {
 
     private int playerCount; //default value
     private final List<String> playerNames = new ArrayList<>();
-    private int initalGold; //default value
+    private int initialGold; //default value
     private int targetGold; //default value
     private long seed; //default value
 
 
     /**
-     * Sets player count.
+     * Sets the number of players in the game.
      *
-     * @param playerCount the player count
+     * @param playerCount the number of players in the game
      */
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
     }
 
     /**
-     * Add player name.
+     * Adds the name of a player to the list of player names.
      *
-     * @param playerName the player name
+     * @param playerName the name of the player
      */
     public void addPlayerName(String playerName) {
         this.playerNames.add(playerName);
     }
 
     /**
-     * Sets inital gold.
+     * Sets the initial amount of gold for each player in the game.
      *
-     * @param initalGold the inital gold
+     * @param initialGold the initial amount of gold for each player in the game
      */
-    public void setInitalGold(int initalGold) {
-        this.initalGold = initalGold;
+    public void setInitialGold(int initialGold) {
+        this.initialGold = initialGold;
     }
 
     /**
-     * Sets target gold.
+     * Sets the target amount of gold for each player to win the game.
      *
-     * @param targetGold the target gold
+     * @param targetGold the target amount of gold for each player to win the game
      */
     public void setTargetGold(int targetGold) {
         this.targetGold = targetGold;
     }
 
     /**
-     * Sets seed.
+     * Sets the seed used to shuffle the tiles.
      *
-     * @param seed the seed
+     * @param seed the seed used to shuffle the tiles
      */
     public void setSeed(long seed) {
         this.seed = seed;
     }
 
     /**
-     * Gets player count.
+     * Returns the number of players in the game.
      *
-     * @return the player count
+     * @return the number of players in the game
      */
     public int getPlayerCount() {
         return this.playerCount;
     }
 
     /**
-     * Gets player name.
+     * Returns the name of a player at the specified index.
      *
-     * @param index the index
-     * @return the player name
+     * @param index the index of the player name to return
+     * @return the name of the player at the specified index
      */
     public String getPlayerName(int index) {
         return this.playerNames.get(index);
     }
 
     /**
-     * Gets inital gold.
+     * Returns the initial amount of gold for each player in the game.
      *
-     * @return the inital gold
+     * @return the initial amount of gold for each player in the game
      */
-    public int getInitalGold() {
-        return this.initalGold;
+    public int getInitialGold() {
+        return this.initialGold;
     }
 
     /**
-     * Gets target gold.
+     * Returns the target amount of gold for each player to win the game.
      *
-     * @return the target gold
+     * @return the target amount of gold for each player to win the game
      */
     public int getTargetGold() {
         return this.targetGold;
     }
 
     /**
-     * Gets seed.
+     * Returns the seed used to shuffle the tiles.
      *
-     * @return the seed
+     * @return the seed used to shuffle the tiles
      */
     public long getSeed() {
         return this.seed;

@@ -4,12 +4,12 @@ import edu.kit.informatik.queensfarming.util.Coordinates;
 import edu.kit.informatik.queensfarming.util.Countdown;
 
 /**
- * The type Farmland.
+ * The Farmland class represents a tile on the game board that can be used to grow and harvest crops.
+ * It extends the GameTile class and contains information on the type of farmland
  *
  * @author uuovz
  * @version 1.0
  */
-
 public class Farmland extends GameTile {
 
     private final FarmlandType farmlandType;
@@ -19,10 +19,10 @@ public class Farmland extends GameTile {
     private int balance;
 
     /**
-     * Instantiates a new Farmland.
+     * Creates a new instance of Farmland.
      *
-     * @param coordinates  the coordinates
-     * @param farmlandType the farmland type
+     * @param coordinates the coordinates of the tile
+     * @param farmlandType the type of farmland
      */
     Farmland(Coordinates coordinates, FarmlandType farmlandType) {
         super(coordinates);
@@ -32,28 +32,27 @@ public class Farmland extends GameTile {
     }
 
     /**
-     * Is plantable boolean.
+     * Checks if a specific vegetable can be planted on this farmland.
      *
-     * @param vegetable the vegetable
-     * @return the boolean
+     * @param vegetable the vegetable to check
+     * @return true if the vegetable can be planted, false otherwise
      */
     public boolean isPlantable(Vegetable vegetable) {
         return this.farmlandType.getPlantableVegetables().contains(vegetable);
     }
 
     /**
-     * Is plantable boolean.
+     * Checks if the farmland is currently plantable.
      *
-     * @return the boolean
+     * @return true if the farmland is plantable, false otherwise
      */
     public boolean isPlantable() {
         return this.balance == 0;
     }
 
     /**
-     * Plant.
-     *
-     * @param vegetable the vegetable
+     * Plants a vegetable on the farmland.
+     * @param vegetable the vegetable to plant
      */
     public void plant(Vegetable vegetable) {
         this.plantedVegetable = vegetable;
@@ -63,7 +62,7 @@ public class Farmland extends GameTile {
     }
 
     /**
-     * Harvest.
+     * Harvests the crop from the farmland.
      */
     public void harvest() {
         this.balance -= 1;
@@ -78,25 +77,25 @@ public class Farmland extends GameTile {
     }
 
     /**
-     * Gets grown vegetables.
+     * Gets the number of grown vegetables on the farmland.
      *
-     * @return the grown vegetables
+     * @return the number of grown vegetables
      */
     public int getGrownVegetables() {
         return this.grownVegetables;
     }
 
     /**
-     * Gets planted vegetable.
+     * Gets the vegetable currently planted on the farmland.
      *
-     * @return the planted vegetable
+     * @return the planted vegetable, null if no vegetable is planted
      */
     public Vegetable getPlantedVegetable() {
         return this.plantedVegetable;
     }
 
     /**
-     * Gets farmland type.
+     * Gets the type of farmland.
      *
      * @return the farmland type
      */
@@ -105,21 +104,24 @@ public class Farmland extends GameTile {
     }
 
     /**
-     * Gets balance.
+     * Gets the balance of the farmland.
      *
      * @return the balance
      */
     public int getBalance() { return this.balance; }
 
     /**
-     * Gets countdown.
+     * Gets the countdown for growing vegetables.
      *
-     * @return the countdown
+     * @return the countdownn
      */
     public Countdown getCountdown() {
         return this.countdown;
     }
 
+    /**
+     * Increases the balance of the farmland if the countdown is finished and the farmland is not full.
+     */
     @Override
     public void nextRound() {
         this.countdown.decreaseCountdown();

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Market.
+ * The Market class represents a market where vegetables can be sold.
+ * It keeps track of the vegetable pairs that can be sold at the market, the rate of sale for each vegetable,
+ * the rate phase, and the sell difference.
  *
  * @author uuovz
  * @version 1.0
@@ -19,19 +21,17 @@ public class Market {
     private int sellDifference = 0;
 
     /**
-     * Instantiates a new Market.
+     * Constructs a new Market object with the specified MarketType.
      *
-     * @param marketType the market type
+     * @param marketType the MarketType that defines the vegetable pairs and rates for this Market
      */
     public Market(MarketType marketType) {
-        for (Vegetable vegetable: marketType.getPair()) {
-            vegetablePair.add(vegetable);
-        }
+        vegetablePair.addAll(marketType.getPair());
         this.rates = marketType.getRates();
     }
 
     /**
-     * Re calculate.
+     * Recalculates the rate phase based on the current sell difference.
      */
     public void reCalculate() {
         while (this.sellDifference >= DIFFERENCE || this.sellDifference <= -DIFFERENCE) {
@@ -47,9 +47,8 @@ public class Market {
     }
 
     /**
-     * Sell.
-     *
-     * @param vegetable the vegetable
+     * Adds the specified Vegetable object to the market to be sold.
+     * @param vegetable the Vegetable object to be sold
      */
     public void sell(Vegetable vegetable) {
         if (this.getIndexOfVegetable(vegetable) == 0) {
@@ -60,20 +59,20 @@ public class Market {
     }
 
     /**
-     * Sellable boolean.
+     * Checks if the specified Vegetable object is sellable at this Market.
      *
-     * @param vegetable the vegetable
-     * @return the boolean
+     * @param vegetable the Vegetable object to check
+     * @return true if the vegetable is included in the vegetable pair list, false otherwise
      */
     public boolean sellable(Vegetable vegetable) {
         return this.vegetablePair.contains(vegetable);
     }
 
     /**
-     * Gets rate.
+     * Gets the rate of sale for the specified Vegetable object at the current rate phase.
      *
-     * @param vegetable the vegetable
-     * @return the rate
+     * @param vegetable the Vegetable object to get the rate for
+     * @return the rate of sale for the specified vegetable at the current rate phase
      */
     public int getRate(Vegetable vegetable) {
         return this.rates[this.ratePhase][this.getIndexOfVegetable(vegetable)];

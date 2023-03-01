@@ -23,7 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The type Game engine.
+ * The `GameEngine` class represents the game engine of the Queens Farming Game.
+ * It implements the `Executable` interface and is responsible for managing the gameplay logic of the farming game.
+ *
  * @author uuovz
  * @version 1.0
  */
@@ -46,12 +48,6 @@ public class GameEngine implements Executable {
     private static final String EXCEPTION_BUY_ADJACENT_PROPERTY = "You do not own an adjacent property.";
     private static final int NEIGHBOUR_DISTANCE = 1;
     private static final int ACTION_COUNT = 2;
-    private ExecutionState executionState;
-    private IoType ioType;
-    private int currentPlayerIndex;
-    private int currentActionLeft;
-    private final Config config;
-    private final Game game;
     private final RenderGameBoard renderGameBoard;
     private final RenderBarn renderBarn;
     private final RenderMarket renderMarket;
@@ -60,11 +56,19 @@ public class GameEngine implements Executable {
     private final RenderHarvest renderHarvest = new RenderHarvest();
     private final RenderTurn renderTurn;
     private final RenderResult renderResult;
+    private final Config config;
+    private final Game game;
+
+    private ExecutionState executionState;
+    private IoType ioType;
+    private int currentPlayerIndex;
+    private int currentActionLeft;
+
 
     /**
-     * Instantiates a new Game engine.
+     * Instantiates a new GameEngine object with the specified game configuration.
      *
-     * @param config the config
+     * @param config the game configuration
      */
     public GameEngine(Config config) {
         this.executionState = ExecutionState.RUNNING;
@@ -80,6 +84,9 @@ public class GameEngine implements Executable {
         this.ioType = IoType.OUTPUT;
     }
 
+    /**
+     * Marks the game engine as finished and sets the IO type to output.
+     */
     @Override
     public void quit() {
         this.executionState = ExecutionState.FINISHED;
@@ -87,10 +94,10 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Buy vegetable string.
+     * Buys the specified vegetable for the current player.
      *
-     * @param vegetable the vegetable
-     * @return the string
+     * @param vegetable the vegetable to buy
+     * @return a string representation of the purchase result, or null if the purchase failed
      */
     public String buyVegetable(Vegetable vegetable) {
         int rate = this.game.getMarket(vegetable).getRate(vegetable);
@@ -106,10 +113,11 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Buy land string.
+     * Buy land from the Farmland deck for the current player.
      *
-     * @param coordinates the coordinates
-     * @return the string
+     * @param coordinates the coordinates of the tile being bought
+     * @return the String representation of the rendered Buy Vegetable action
+     * @throws GameException if there are no more farm tiles left, the player already owns
      */
     public String buyLand(Coordinates coordinates) {
         FarmlandDeck farmlandDeck = this.game.getFarmlandDeck();
@@ -133,10 +141,11 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Sell string.
+     * Sells all vegetables in the list on the market for the current player.
      *
-     * @param vegetables the vegetables
-     * @return the string
+     * @param vegetables the list of vegetables to sell
+     * @return a string representing the result of the sell action
+     * @throws GameException if the player tries to sell more vegetables than they own or vegetables they do not own
      */
     public String sell(List<Vegetable> vegetables) {
         int totalSoldVegetables = 0;
@@ -166,9 +175,9 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Sell string.
+     * Sells all vegetables in the barn on the market for the current player.
      *
-     * @return the string
+     * @return a string representing the result of the sell action
      */
     public String sell() {
         int totalSoldVegetables = 0;
@@ -188,11 +197,13 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Plant string.
+     * Plant a vegetable on a farmland tile owned by the current player at the specified coordinates.
      *
-     * @param coordinates the coordinates
-     * @param vegetable   the vegetable
-     * @return the string
+     * @param coordinates the coordinates of the farmland tile to plant the vegetable on
+     * @param vegetable the vegetable to plant on the specified farmland tile
+     * @return null, as no rendering is required for this action
+     * @throws GameException if the specified coordinates are invalid,
+     * if the specified coordinates correspond to the barn,
      */
     public String plant(Coordinates coordinates, Vegetable vegetable) {
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
@@ -220,11 +231,13 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Harvest string.
+     * Harvests vegetables from a farmland tile at the specified coordinates for the current player.
      *
-     * @param coordinates the coordinates
-     * @param amount      the amount
-     * @return the string
+     * @param coordinates the coordinates of the farmland tile to harvest from
+     * @param amount the amount of vegetables to harvest
+     * @return a string representing the result of the harvest action
+     * @throws GameException if the specified coordinates are invalid or the tile is not plantable or does not contain
+     *         enough vegetables, or the amount to harvest is zero
      */
     public String harvest(Coordinates coordinates, int amount) {
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
@@ -255,18 +268,18 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Show market string.
+     * Displays the current state of the game's market.
      *
-     * @return the string
+     * @return A string representation of the market's current state.
      */
     public String showMarket() {
         return this.renderMarket.render();
     }
 
     /**
-     * Show barn string.
+     * Returns a string representation of the current player's barn.
      *
-     * @return the string
+     * @return a string representation of the current player's barn
      */
     public String showBarn() {
         this.renderBarn.setIndex(this.currentPlayerIndex);
@@ -274,9 +287,9 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Show board string.
+     * Returns a string representation of the current player's board.
      *
-     * @return the string
+     * @return a string representation of the current player's board
      */
     public String showBoard() {
         this.renderGameBoard.setIndex(this.currentPlayerIndex);
@@ -284,9 +297,9 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * End turn string.
+     * End turn method that switches to the next player's turn.
      *
-     * @return the string
+     * @return null
      */
     public String endTurn() {
         this.switchToNextPlayer();
@@ -294,7 +307,8 @@ public class GameEngine implements Executable {
     }
 
     /**
-     * Gets output stream.
+     * Gets the output stream for the current game state.
+     * This method returns a string that represents the output stream of the current game state.
      *
      * @return the output stream
      */
@@ -310,9 +324,13 @@ public class GameEngine implements Executable {
             return this.renderResult.render();
         }
         return null;
-
     }
 
+    /**
+     * Returns whether the game is currently active or not.
+     *
+     * @return true if the game is active, false otherwise.
+     */
     @Override
     public boolean isActive() {
         return this.executionState != ExecutionState.EXITED;

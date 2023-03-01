@@ -1,14 +1,15 @@
 package edu.kit.informatik.queensfarming.entity;
 
 /**
- * The interface Roundable.
+ * The Roundable interface represents an entity that can progress to the next round.
+ * It defines a single method that should be implemented to perform necessary actions for the next round.
  *
- * @author uuovz
  * @version 1.0
+ * @author uuovz
  */
 public interface Roundable {
     /**
-     * Next round.
+     * Advances the entity to the next round by performing any necessary actions.
      */
     void nextRound();
 }

@@ -2,6 +2,13 @@ package edu.kit.informatik.queensfarming.rendering;
 
 import edu.kit.informatik.queensfarming.entity.Vegetable;
 
+/**
+ * The abstract class Render that implements the Renderable interface.
+ * It contains methods that help in rendering the different components of the output.
+ * @author uuovz
+ * @version 1.0
+ */
+
 public abstract class Render implements Renderable {
 
     /**
@@ -9,27 +16,35 @@ public abstract class Render implements Renderable {
      */
     protected static final String SUFFIX_S = "s";
     /**
-     * The constant SUFFIX_ES.
+     * The constant SUFFIX_ES for tomato.
      */
     protected static final String SUFFIX_ES = "es";
-    
+    /**
+     * The constant is an empty string.
+     */
     protected static final String EMPTY_STRING = "";
-
+    /**
+     * The constant is a blank string.
+     */
+    protected static final String BLANK_STRING = " ";
+    /**
+     * The constant is a line seperator.
+     */
     protected static final String NEW_LINE = System.lineSeparator();
 
     /**
-     *
-     * @return
+     * This method must be implemented by the classes that inherit from Render
+     * and contain the logic for rendering the output.
+     * @return a String representation of the rendered output.
      */
     @Override
     public abstract String render();
 
     /**
-     * Gets suffix.
-     *
-     * @param vegetable the vegetable
-     * @param amount    the amount
-     * @return the suffix
+     * Returns the suffix for the amount of the given Vegetable.
+     * @param vegetable the Vegetable for which the suffix needs to be returned.
+     * @param amount the amount of the given Vegetable.
+     * @return the suffix for the amount of the given Vegetable.
      */
     public static String getSuffixVegetable(Vegetable vegetable, int amount) {
         String suffix = EMPTY_STRING;
@@ -45,7 +60,12 @@ public abstract class Render implements Renderable {
         return suffix;
     }
 
-    public static String getSuffix(int amount) {
+    /**
+     * Returns the suffix for the given amount.
+     * @param amount the amount for which the suffix needs to be returned.
+     * @return the suffix for the given amount.
+     */
+    protected static String getSuffix(int amount) {
         String suffix = SUFFIX_S;
         if (amount == 1) {
             suffix = EMPTY_STRING;

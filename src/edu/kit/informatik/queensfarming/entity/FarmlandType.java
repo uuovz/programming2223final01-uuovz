@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The enum Farmland type.
+ * The enum Farmland type represents different types of Farmland that can be used in the game.
+ * Each type has a name, shortcut, factor, capacity and a list of plantable vegetables.
  *
  * @author uuovz
  * @version 1.0
@@ -41,12 +42,13 @@ public enum FarmlandType {
 
 
     /**
+     * Constructs a new FarmlandType instance with the given name, shortcut, factor, capacity, and plantable vegetables.
      *
-     * @param name
-     * @param shortcut
-     * @param factor
-     * @param capacity
-     * @param plantableVegetables
+     * @param name the name of the FarmlandType
+     * @param shortcut the shortcut of the FarmlandType
+     * @param factor the factor of the FarmlandType
+     * @param capacity the capacity of the FarmlandType
+     * @param plantableVegetables the list of plantable vegetables of the FarmlandType
      */
     FarmlandType(String name, String shortcut, int factor, int capacity, Vegetable... plantableVegetables) {
         this.name = name;
@@ -58,45 +60,45 @@ public enum FarmlandType {
     }
 
     /**
-     * Gets name.
+     * Gets the name of the FarmlandType.
      *
-     * @return the name
-     */
+     * @return the name of the FarmlandType
+    */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Gets shortcut.
+     * Gets the shortcut of the FarmlandType.
      *
-     * @return the shortcut
+     * @return the shortcut of the FarmlandType
      */
     public String getShortcut() {
         return this.shortcut;
     }
 
     /**
-     * Gets factor.
+     * Gets the factor of the FarmlandType.
      *
-     * @return the factor
+     * @return the factor of the FarmlandType
      */
     public int getFactor() {
         return factor;
     }
 
     /**
-     * Gets capacity.
+     * Gets the capacity of the FarmlandType.
      *
-     * @return the capacity
+     * @return the capacity of the FarmlandType
      */
     public int getCapacity() {
         return this.capacity;
     }
 
     /**
-     * Gets plantable vegetables.
+     * Gets the list of plantable vegetables of the FarmlandType.
      *
-     * @return the plantable vegetables
+     * @return the list of plantable vegetables of the FarmlandType
      */
     public List<Vegetable> getPlantableVegetables() {
         return Collections.unmodifiableList(this.plantableVegetables);

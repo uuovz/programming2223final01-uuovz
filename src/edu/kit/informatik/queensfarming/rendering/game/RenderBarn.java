@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * The Render of the Barn.
+ * This class extends the abstract class RenderGame and provides methods for rendering
+ * the barn of a player.
  * @author uuovz
  * @version 1.0
  */
@@ -24,21 +26,23 @@ public class RenderBarn extends RenderGame {
 
 
     /**
-     *
-     * @param game
+     * Instantiates a new Render barn.
+     * @param game the game
      */
     public RenderBarn(Game game) {
         super(game);
     }
 
     /**
-     * Show barn string.
-     *
-     * @return the string
-     */
+     * Returns the string message that shows the barn with its countdown, gold stock and vegetable stock.
+     * If there are vegetables in the barn, it will display the name,
+     * quantity and the total sum of each vegetable in stock.
+     * If there are no vegetables in the barn, only the gold stock will be displayed.
+     * @return the string message that shows the barn with its countdown, gold stock and vegetable stock
+    */
     @Override
     public String render() {
-        Barn barn = this.game.getGameTileBoard(this.index).getBarn();
+        Barn barn = this.getGame().getGameTileBoard(this.index).getBarn();
         Countdown countdown = barn.getCountdown();
         int goldStock = barn.getGoldStock();
 
@@ -51,7 +55,7 @@ public class RenderBarn extends RenderGame {
         String suffix = remainingTurns == 1 ? EMPTY_STRING : SUFFIX_S;
         stringBuilder.append(OUTPUT_BARN);
         if (barn.vegetableInStock()) {
-            stringBuilder.append(String.format(LABEL_BLANK + OUTPUT_BARN_SPOILS, remainingTurns, suffix));
+            stringBuilder.append(String.format(BLANK_STRING + OUTPUT_BARN_SPOILS, remainingTurns, suffix));
             stringBuilder.append(NEW_LINE);
 
             for (Vegetable vegetable : sortedList) {
@@ -107,8 +111,8 @@ public class RenderBarn extends RenderGame {
     }
 
     /**
-     *
-     * @param index
+     * Sets the index of the RenderBarn object to the specified value.
+     * @param index the new index value to be set
      */
     public void setIndex(int index) {
         this.index = index;

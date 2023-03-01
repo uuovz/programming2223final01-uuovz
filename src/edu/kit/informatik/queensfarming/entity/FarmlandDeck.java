@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The type Farmland deck.
+ * The FarmlandDeck class represents a deck of Farmland tiles, used in the Farming Game.
+ * The FarmlandDeck is composed of Farmland objects, each of which has a specific FarmlandType and a set of coordinates.
  *
  * @author uuovz
  * @version 1.0
@@ -20,10 +21,10 @@ public class FarmlandDeck {
     private final List<Farmland> farmlandDeck = new ArrayList<>();
 
     /**
-     * Instantiates a new Farmland deck.
+     * Creates a new FarmlandDeck with a given number of players and seed.
      *
-     * @param playerCount the player count
-     * @param seed        the seed
+     * @param playerCount the number of players in the game
+     * @param seed the seed used to shuffle the Farmland tiles
      */
     public FarmlandDeck(int playerCount, long seed) {
         for (FarmlandType farmlandType: FarmlandType.values()) {
@@ -35,11 +36,10 @@ public class FarmlandDeck {
         Collections.shuffle(farmlandDeck, new Random(seed));
     }
 
-
     /**
-     * Take tile farmland.
+     * Takes a Farmland tile from the top of the deck and removes it from the deck.
      *
-     * @return the farmland
+     * @return the Farmland tile taken from the top of the deck
      */
     public Farmland takeTile() {
         Farmland farmland = farmlandDeck.get(TOP_FARMLAND);
@@ -48,14 +48,12 @@ public class FarmlandDeck {
     }
 
     /**
-     * Has tiles left boolean.
+     * Checks whether there are any Farmland tiles left in the deck.
      *
-     * @return the boolean
+     * @return true if there are still Farmland tiles left in the deck, false otherwise
      */
     public boolean hasTilesLeft() {
         return !this.farmlandDeck.isEmpty();
     }
-
-
 
 }

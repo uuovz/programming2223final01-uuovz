@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Game tile board.
+ * The GameTileBoard class represents a board of GameTile objects, including Farmland and Barn tiles.
+ * It also implements the Roundable interface, allowing the board to be updated with each round of the game.
  *
  * @author uuovz
  * @version 1.0
@@ -20,13 +21,14 @@ public class GameTileBoard implements Roundable {
 
 
     /**
-     * Instantiates a new Game tile board.
+     * Constructs a new GameTileBoard object with the given initial gold amount.
+     * The board includes a Barn tile and 3 Farmland tiles, with the Barn tile at the origin.
      *
-     * @param initalGold the inital gold
+     * @param initialGold the initial gold amount
      */
-    public GameTileBoard(int initalGold) {
+    public GameTileBoard(int initialGold) {
         this.barn = new Barn(
-            new Coordinates(Coordinates.ORIGIN_COORDINATES, Coordinates.ORIGIN_COORDINATES), initalGold
+            new Coordinates(Coordinates.ORIGIN_COORDINATES, Coordinates.ORIGIN_COORDINATES), initialGold
         );
         this.farmlandsTiles.add(new Farmland(
             new Coordinates(this.minXCoordinate, Coordinates.ORIGIN_COORDINATES), FarmlandType.GARDEN));
@@ -37,9 +39,9 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets game tiles.
+     * Returns a list of all GameTile objects on the board, including the Barn and Farmland tiles.
      *
-     * @return the game tiles
+     * @return a list of all GameTile objects on the board
      */
     public List<GameTile> getGameTiles() {
         final List<GameTile> gameTiles = new ArrayList<>();
@@ -49,10 +51,10 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets game tile.
+     * Returns the GameTile object at the given coordinates on the board.
      *
-     * @param coordinates the coordinates
-     * @return the game tile
+     * @param coordinates the coordinates of the desired GameTile object
+     * @return the GameTile object at the given coordinates, or null if no GameTile object exists at those coordinates
      */
     public GameTile getGameTile(Coordinates coordinates) {
         if (coordinates.compareTo(Coordinates.ORIGIN) == 0) {
@@ -67,10 +69,10 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets farmland.
+     * Returns the Farmland tile at the given coordinates on the board.
      *
-     * @param coordinates the coordinates
-     * @return the farmland
+     * @param coordinates the coordinates of the desired Farmland tile
+     * @return the Farmland tile at the given coordinates, or null if no Farmland tile exists at those coordinates
      */
     public Farmland getFarmland(Coordinates coordinates) {
         for (Farmland farmland: farmlandsTiles) {
@@ -82,9 +84,9 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets barn.
+     * This method returns the Barn object in the farm.
      *
-     * @return the barn
+     * @return the Barn object in the farm.
      */
     public Barn getBarn() {
         return this.barn;
@@ -92,9 +94,9 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Add farmland.
+     * This method adds a Farmland object to the farm and updates the maximum and minimum x and y coordinates.
      *
-     * @param farmland the farmland
+     * @param farmland the Farmland object to be added to the farm.
      */
     public void addFarmland(Farmland farmland) {
         this.farmlandsTiles.add(farmland);
@@ -105,6 +107,9 @@ public class GameTileBoard implements Roundable {
         maxYCoordinate = Math.max(maxYCoordinate, yCoordinate);
     }
 
+    /**
+     * This method calls the nextRound() method of the Barn object and each Farmland object in the farm.
+     */
     @Override
     public void nextRound() {
         this.barn.nextRound();
@@ -114,18 +119,18 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets spoiled vegetable amount.
+     * This method returns the number of spoiled vegetables in the Barn object.
      *
-     * @return the spoiled vegetable amount
+     * @return the number of spoiled vegetables in the Barn object.
      */
     public int getSpoiledVegetableAmount() {
         return this.barn.getSpoiledVegetables();
     }
 
     /**
-     * Gets grown vegetable amount.
+     * This method returns the total number of grown vegetables in all Farmland objects in the farm.
      *
-     * @return the grown vegetable amount
+     * @return the total number of grown vegetables in all Farmland objects in the farm.
      */
     public int getGrownVegetableAmount() {
         int sum = 0;
@@ -136,31 +141,31 @@ public class GameTileBoard implements Roundable {
     }
 
     /**
-     * Gets max x coordinate.
+     * This method returns the maximum x-coordinate of all Farmland objects in the farm.
      *
-     * @return the max x coordinate
+     * @return the maximum x-coordinate of all Farmland objects in the farm.
      */
     public int getMaxXCoordinate() { return this.maxXCoordinate; }
 
     /**
-     * Gets min x coordinate.
+     * This method returns the minimum x-coordinate of all Farmland objects in the farm.
      *
-     * @return the min x coordinate
+     * @return the minimum x-coordinate of all Farmland objects in the farm.
      */
     public int getMinXCoordinate() { return this.minXCoordinate; }
 
     /**
-     * Gets max y coordinate.
+     * This method returns the maximum y-coordinate of all Farmland objects in the farm.
      *
-     * @return the max y coordinate
+     * @return the maximum y-coordinate of all Farmland objects in the farm.
      */
     public int getMaxYCoordinate() { return this.maxYCoordinate; }
 
     /**
-     * Gets rate.
+     * This method returns the rate of a Farmland object based on its coordinates.
      *
-     * @param coordinates the coordinates
-     * @return the rate
+     * @param coordinates the coordinates of the Farmland object to calculate the rate for.
+     * @return the rate of the Farmland object.
      */
     public static int getRate(Coordinates coordinates) {
         return 10 * ((Math.abs(coordinates.getXCoordinate()) + Math.abs(coordinates.getYCoordinate())) - 1);

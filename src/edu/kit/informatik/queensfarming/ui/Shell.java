@@ -3,64 +3,39 @@ package edu.kit.informatik.queensfarming.ui;
 import edu.kit.informatik.queensfarming.GameException;
 import edu.kit.informatik.queensfarming.game.Config;
 import edu.kit.informatik.queensfarming.game.GameEngine;
+import edu.kit.informatik.queensfarming.rendering.Renderable;
+import edu.kit.informatik.queensfarming.rendering.game.RenderPixelArt;
 
 import java.util.Scanner;
 
 /**
- * The type Shell.
+ * The Shell class represents the command-line interface for the N-Queens game.
+ * It provides the user with an interactive shell where they can input commands and receive output from the game engine.
+ * The Shell class is responsible for initializing the game configuration,
+ * parsing user input, and running the game engine.
  *
- * @author uuovz  Inspired by Thomas Weber
+ * @author uuovz
  * @version 1.0
  */
 public class Shell {
 
     /**
-     *
+     * The QUIT_ARGUMENT constant represents the user input string used to quit the game.
      */
     public static final String QUIT_ARGUMENT = "quit";
+    /**
+     * The EMPTY_STRING constant is an empty string used for some outputs.
+     */
+    public static final String EMPTY_STRING = "";
 
     /**
-     * The constant BLANK_STRING.
-     */
-    public static final String BLANK_STRING = " ";
-    /**
-     * The start of an output string for a failed operation.
-     */
-    public static final String ERROR_START = "Error: ";
-
-    /**
-     * The constant ERROR_END.
-     */
-    private static final String ERROR_END = " Please try again!";
-    private static final String PIXEL_ART
-        =
-        "                           _.-^-._    .--.    " + System.lineSeparator()
-            +
-        "                        .-'   _   '-. |__|    " + System.lineSeparator()
-            +
-        "                       /     |_|     \\|  |    " + System.lineSeparator()
-            +
-        "                      /               \\  |    " + System.lineSeparator()
-            +
-        "                     /|     _____     |\\ |    " + System.lineSeparator()
-            +
-        "                      |    |==|==|    |  |    " + System.lineSeparator()
-            +
-        "  |---|---|---|---|---|    |--|--|    |  |    " + System.lineSeparator()
-            +
-        "  |---|---|---|---|---|    |==|==|    |  |    " + System.lineSeparator()
-            +
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + System.lineSeparator()
-            +
-        "^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^" + System.lineSeparator()
-            +
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
-
-    /**
-     * Start.
+     * This method starts the game shell. It initializes the rendering of the game's pixel art and the configuration
+     * of the game through a Config object and a ParserConfig object. It then reads the user's input using a Scanner
+     * object and parses it according to the current I/O type.
      */
     public void start() {
-        System.out.println(PIXEL_ART);
+        Renderable renderPixelArt = new RenderPixelArt();
+        System.out.println(renderPixelArt.render());
         Config config = new Config();
         ParserConfig parserConfig = new ParserConfig(config);
         Scanner scanner = new Scanner(System.in);
@@ -71,7 +46,7 @@ public class Shell {
                     String userInput = scanner.nextLine();
                     parserConfig.parseConfig(userInput);
                 } catch (GameException exception) {
-                    System.err.println(ERROR_START + exception.getMessage() + ERROR_END);
+                    System.err.println(exception.getMessage());
                 }
             } else {
                 System.out.println(parserConfig.getOutputStream());
@@ -88,7 +63,7 @@ public class Shell {
                             System.out.println(output);
                         }
                     } catch (GameException exception) {
-                        System.err.println(ERROR_START + exception.getMessage() + ERROR_END);
+                        System.err.println(exception.getMessage());
                     }
                 } else {
                     System.out.println(gameEngine.getOutputStream());
@@ -97,6 +72,5 @@ public class Shell {
         }
 
         scanner.close();
-
     }
 }

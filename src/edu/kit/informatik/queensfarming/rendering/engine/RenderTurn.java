@@ -6,7 +6,10 @@ import edu.kit.informatik.queensfarming.game.Game;
 import edu.kit.informatik.queensfarming.rendering.Render;
 
 /**
- * The type Render turn.
+ * The type Render turn is a child class of Render that generates a string
+ * describing a player's turn in the game.
+ * @author uuovz
+ * @version 1.0
  */
 public class RenderTurn extends Render {
 
@@ -20,16 +23,19 @@ public class RenderTurn extends Render {
     private int index = 0;
 
     /**
-     * Instantiates a new Render turn.
-     *
-     * @param game   the game
-     * @param config the config
+     * Constructs a new RenderTurn object.
+     * @param game the game being played
+     * @param config the configuration settings for the game
      */
     public RenderTurn(Game game, Config config) {
         this.game = game;
         this.config = config;
     }
 
+    /**
+     * Generates a string describing the current player's turn in the game.
+     * @return the string describing the current player's turn
+     */
     @Override
     public String render() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -53,9 +59,8 @@ public class RenderTurn extends Render {
     }
 
     /**
-     * Sets index.
-     *
-     * @param index the index
+     * Sets the index of the current player.
+     * @param index the index of the current player
      */
     public void setIndex(int index) {
         this.index = index;

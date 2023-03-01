@@ -1,7 +1,12 @@
 package edu.kit.informatik.queensfarming.rendering.engine;
 
-import edu.kit.informatik.queensfarming.entity.Vegetable;
 import edu.kit.informatik.queensfarming.rendering.Render;
+
+/**
+ * The rendering engine for the "buy" command.
+ * @author uuovz
+ * @version 1.0
+ */
 
 public class RenderBuy extends Render {
 
@@ -10,11 +15,8 @@ public class RenderBuy extends Render {
     private int rate;
 
     /**
-     * Output buy land string.
-     *
-     * @param farmlandName the farmland name
-     * @param rate         the rate
-     * @return the string
+     * Renders the output for buying a land.
+     * @return The string representation of the output message.
      */
     @Override
     public String render() {
@@ -22,16 +24,16 @@ public class RenderBuy extends Render {
     }
 
     /**
-     *
-     * @param vegetable
+     * Sets the name of the item being bought.
+     * @param name The name of the item.
      */
     public void setItem(String name) {
         this.item = name;
     }
 
     /**
-     *
-     * @param rate
+     * Sets the rate (cost) of the item being bought.
+     * @param rate The cost of the item.
      */
     public void setRate(int rate) {
         this.rate = rate;

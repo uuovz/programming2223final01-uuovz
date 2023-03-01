@@ -2,6 +2,8 @@ package edu.kit.informatik.queensfarming.entity;
 
 /**
  * The enum Vegetable.
+ * This enum represents different types of vegetables with their name, shortcut, and grow frequency.
+ * The grow frequency determines the number of rounds required for the vegetable to grow.
  */
 public enum Vegetable {
     /**
@@ -26,10 +28,11 @@ public enum Vegetable {
     private final int growFrequency;
 
     /**
+     * Constructs a Vegetable object with the specified name, shortcut, and grow frequency.
      *
-     * @param name
-     * @param shortcut
-     * @param growFrequency
+     * @param name the name of the vegetable
+     * @param shortcut the shortcut for the vegetable
+     * @param growFrequency the grow frequency for the vegetable
      */
     Vegetable(String name, String shortcut, int growFrequency) {
         this.name = name;
@@ -38,27 +41,27 @@ public enum Vegetable {
     }
 
     /**
-     * Gets name.
+     * Gets the name of the vegetable.
      *
-     * @return the name
+     * @return the name of the vegetable
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Gets shortcut.
+     * Gets the shortcut for the vegetable.
      *
-     * @return the shortcut
+     * @return the shortcut for the vegetable
      */
     public String getShortcut() {
         return this.shortcut;
     }
 
     /**
-     * Gets grow frequency.
+     * Gets the grow frequency for the vegetable.
      *
-     * @return the grow frequency
+     * @return the grow frequency for the vegetable
      */
     public int getGrowFrequency() {
         return this.growFrequency;

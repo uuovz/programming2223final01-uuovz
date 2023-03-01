@@ -4,39 +4,41 @@ import edu.kit.informatik.queensfarming.game.Game;
 import edu.kit.informatik.queensfarming.rendering.Render;
 
 /**
- *
+ * The abstract class RenderGame is a subclass of Render and is the parent class for all rendering classes
+ * that render the Game object in some way.
  * @author uuovz
  * @version 1.0
  */
 public abstract class RenderGame extends Render {
 
     /**
-     * The constant EMPTY_STRING.
-     */
-    protected static final String EMPTY_STRING = "";
-    /**
-     * The constant LABEL_BLANK.
-     */
-    protected static final String LABEL_BLANK = " ";
-    /**
      * The constant LABEL_SEPERATOR.
      */
     protected static final String LABEL_SEPERATOR = ":";
 
-    /**
-     * The Game.
-     */
-    protected final Game game;
+    private final Game game;
 
     /**
-     * Instantiates a new Render game.
-     *
-     * @param game the game
+     * Creates a new RenderGame object with the given Game object.
+     * @param game the Game object to be rendered.
      */
     RenderGame(Game game) {
         this.game = game;
     }
 
+    /**
+     * Renders the Game object in some way.
+     * @return a string representation of the rendered Game object.
+     */
     @Override
     public abstract String render();
+
+    /**
+     * The Game object to be rendered.
+     *
+     * @return game object
+     */
+    public Game getGame() {
+        return game;
+    }
 }

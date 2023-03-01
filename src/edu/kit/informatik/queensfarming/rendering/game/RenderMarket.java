@@ -2,10 +2,10 @@ package edu.kit.informatik.queensfarming.rendering.game;
 
 import edu.kit.informatik.queensfarming.entity.Vegetable;
 import edu.kit.informatik.queensfarming.game.Game;
-import edu.kit.informatik.queensfarming.ui.Shell;
 
 /**
- *
+ * The RenderMarket class is a child class of RenderGame that renders the market information
+ * for the game. It includes methods for displaying the current rates for each vegetable in the market.
  * @author uuovz
  * @version 1.0
  */
@@ -18,18 +18,16 @@ public class RenderMarket extends RenderGame {
     private static final String TEMPLATE_SALAD_RATE = " %5d";
 
     /**
-     * Instantiates a new Render market.
-     *
-     * @param game the game
+     * Constructs a new RenderMarket object with the given Game object.
+     * @param game the Game object that this RenderMarket object will render the market information for.
      */
     public RenderMarket(Game game) {
         super(game);
     }
 
     /**
-     * Show market string.
-     *
-     * @return the string
+     * Returns a String containing the current market rates for each vegetable.
+     * @return a String containing the market rates for each vegetable in the format:
      */
     @Override
     public String render() {
@@ -37,16 +35,16 @@ public class RenderMarket extends RenderGame {
         stringBuilder
             .append(String.format(TEMPLATE_VEGETABLE + LABEL_SEPERATOR + TEMPLATE_MUSHROOM_RATE,
                 Vegetable.MUSHROOM.getName(), SUFFIX_S,
-                this.game.getMarket(Vegetable.MUSHROOM).getRate(Vegetable.MUSHROOM), NEW_LINE))
+                this.getGame().getMarket(Vegetable.MUSHROOM).getRate(Vegetable.MUSHROOM), NEW_LINE))
             .append(String.format(TEMPLATE_VEGETABLE + LABEL_SEPERATOR +  TEMPLATE_CARROT_RATE,
                 Vegetable.CARROT.getName(), SUFFIX_S,
-                this.game.getMarket(Vegetable.CARROT).getRate(Vegetable.CARROT), NEW_LINE))
+                this.getGame().getMarket(Vegetable.CARROT).getRate(Vegetable.CARROT), NEW_LINE))
             .append(String.format(TEMPLATE_VEGETABLE + LABEL_SEPERATOR + TEMPLATE_TOMATO_RATE,
                 Vegetable.TOMATO.getName(), SUFFIX_ES,
-                this.game.getMarket(Vegetable.TOMATO).getRate(Vegetable.TOMATO), NEW_LINE))
+                this.getGame().getMarket(Vegetable.TOMATO).getRate(Vegetable.TOMATO), NEW_LINE))
             .append(String.format(TEMPLATE_VEGETABLE + LABEL_SEPERATOR +  TEMPLATE_SALAD_RATE,
                 Vegetable.SALAD.getName(), SUFFIX_S,
-                this.game.getMarket(Vegetable.SALAD).getRate(Vegetable.SALAD)));
+                this.getGame().getMarket(Vegetable.SALAD).getRate(Vegetable.SALAD)));
         return stringBuilder.toString();
     }
 
