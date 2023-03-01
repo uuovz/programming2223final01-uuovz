@@ -28,49 +28,58 @@ public class Shell {
      */
     public static final String EMPTY_STRING = "";
 
+    private final Renderable renderPixelArt = new RenderPixelArt();
+    private final Config config = new Config();
+    private final ParserConfig parserConfig = new ParserConfig(this.config);
+    private GameEngine gameEngine;
+
     /**
-     * This method starts the game shell. It initializes the rendering of the game's pixel art and the configuration
-     * of the game through a Config object and a ParserConfig object. It then reads the user's input using a Scanner
+     * This method starts the game shell.
+     * It reads the user's input using a Scanner
      * object and parses it according to the current I/O type.
      */
     public void start() {
-        Renderable renderPixelArt = new RenderPixelArt();
-        System.out.println(renderPixelArt.render());
-        Config config = new Config();
-        ParserConfig parserConfig = new ParserConfig(config);
+        System.out.println(this.renderPixelArt.render());
         Scanner scanner = new Scanner(System.in);
-        //setup queensframing config
-        while (parserConfig.isActive()) {
-            if (parserConfig.getCurrentIoType() == IoType.INPUT) {
+        this.setupLoop(scanner);
+        if (!parserConfig.quitted()) {
+            this.gameEngine = new GameEngine(this.config);
+            this.gameLoop(scanner);
+        }
+
+        scanner.close();
+    }
+
+    private void setupLoop(Scanner scanner) {
+        while (this.parserConfig.isActive()) {
+            if (this.parserConfig.getCurrentIoType() == IoType.INPUT) {
                 try {
                     String userInput = scanner.nextLine();
-                    parserConfig.parseConfig(userInput);
+                    this.parserConfig.parseConfig(userInput);
                 } catch (GameException exception) {
                     System.err.println(exception.getMessage());
                 }
             } else {
-                System.out.println(parserConfig.getOutputStream());
+                System.out.println(this.parserConfig.getOutputStream());
             }
         }
-        if (!parserConfig.quitted()) {
-            GameEngine gameEngine = new GameEngine(config);
-            while (gameEngine.isActive()) {
-                if (gameEngine.getIoType() == IoType.INPUT) {
-                    try {
-                        String userInput = scanner.nextLine();
-                        String output = ParserGame.parseCommand(userInput, gameEngine);
-                        if (output != null) {
-                            System.out.println(output);
-                        }
-                    } catch (GameException exception) {
-                        System.err.println(exception.getMessage());
-                    }
-                } else {
-                    System.out.println(gameEngine.getOutputStream());
-                }
-            }
-        }
+    }
 
-        scanner.close();
+    private void gameLoop(Scanner scanner) {
+        while (gameEngine.isActive()) {
+            if (gameEngine.getIoType() == IoType.INPUT) {
+                try {
+                    String userInput = scanner.nextLine();
+                    String output = ParserGame.parseCommand(userInput, gameEngine);
+                    if (output != null) {
+                        System.out.println(output);
+                    }
+                } catch (GameException exception) {
+                    System.err.println(exception.getMessage());
+                }
+            } else {
+                System.out.println(gameEngine.getOutputStream());
+            }
+        }
     }
 }

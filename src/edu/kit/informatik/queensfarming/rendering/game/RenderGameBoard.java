@@ -25,7 +25,6 @@ public class RenderGameBoard extends RenderGame {
     private static final String TEMPLATE_FARMLAND_LOWER_B = " %s %s";
     private static final String TEMPLATE_FARMLAND_LOWER_C = "%s %s";
     private static final String SHORTCUT = "B";
-
     private int index = 0;
 
     /**
@@ -64,14 +63,16 @@ public class RenderGameBoard extends RenderGame {
                     }
                     barrier = false;
                 } else {
-                    GameTile gameTile = gameTileBoard.getGameTile(new Coordinates(xCoordinate, yCoordinate));
-                    if (gameTile instanceof Farmland) {
+                    Coordinates coordinates = new Coordinates(xCoordinate, yCoordinate);
+                    Farmland farmland = gameTileBoard.getFarmland(coordinates);
+                    Barn barn = gameTileBoard.getBarn();
+                    if (farmland != null) {
                         stringBuilder.append(
                             this.farmlandRow(yIndex, gameTileBoard.getFarmland(
                                 new Coordinates(xCoordinate, yCoordinate))
                             )
                         );
-                    } else if (gameTile instanceof Barn) {
+                    } else if (barn.getCoordinates().equals(coordinates)) {
                         stringBuilder.append(
                             barnRow(yIndex, gameTileBoard.getBarn())
                         );

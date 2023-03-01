@@ -13,6 +13,8 @@ import java.util.List;
  * @version 1.0
  */
 public class GameTileBoard implements Roundable {
+
+    private static final int FAKTOR = 10;
     private final List<Farmland> farmlandsTiles = new ArrayList<>();
     private final Barn barn;
     private int maxXCoordinate = 1;
@@ -168,7 +170,7 @@ public class GameTileBoard implements Roundable {
      * @return the rate of the Farmland object.
      */
     public static int getRate(Coordinates coordinates) {
-        return 10 * ((Math.abs(coordinates.getXCoordinate()) + Math.abs(coordinates.getYCoordinate())) - 1);
+        return FAKTOR * ((Math.abs(coordinates.getXCoordinate()) + Math.abs(coordinates.getYCoordinate())) - 1);
     }
 
 }

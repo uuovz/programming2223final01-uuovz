@@ -1,6 +1,7 @@
 package edu.kit.informatik.queensfarming.rendering.config;
 
 import edu.kit.informatik.queensfarming.rendering.Render;
+import edu.kit.informatik.queensfarming.ui.ParserConfig;
 
 /**
  * The RenderConfig class is responsible for rendering the configuration menu of the game.
@@ -26,15 +27,15 @@ public class RenderConfig extends Render {
     @Override
     public String render() {
         String output;
-        if (phase == 5) {
+        if (phase == ParserConfig.STEP_PLAYERCOUNT) {
             output = OUTPUT_PLAYERNUMBER;
-        } else if (phase == 4) {
+        } else if (phase == ParserConfig.STEP_NAME) {
             output = String.format(OUTPUT_PLAYERNAME, this.currentPlayer);
-        } else if (phase == 3) {
+        } else if (phase == ParserConfig.STEP_INITIANAL_GOLD) {
             output = OUTPUT_INITAL_GOLD;
-        } else if (phase == 2) {
+        } else if (phase == ParserConfig.STEP_FINAL_GOLD) {
             output = OUTPUT_FINAL_GOLD;
-        } else if (phase == 1) {
+        } else if (phase == ParserConfig.STEP_SEED) {
             output = OUTPUT_SEED;
         } else {
             output = null;

@@ -17,6 +17,26 @@ import java.util.regex.Pattern;
  */
 public class ParserConfig implements Executable {
 
+    /**
+     * Playercount number representation
+     */
+    public static final int STEP_PLAYERCOUNT = 5;
+    /**
+     * Name number representation
+     */
+    public static final int STEP_NAME = 4;
+    /**
+     * Initianal gold number representation
+     */
+    public static final int STEP_INITIANAL_GOLD = 3;
+    /**
+     * Final gold number representation
+     */
+    public static final int STEP_FINAL_GOLD = 2;
+    /**
+     * Seed number representation
+     */
+    public static final int STEP_SEED = 1;
     private static final String EXCEPTION_INVALID_NUMBER = "Please enter a natural number bigger zero.";
     private static final String EXCEPTION_INVALID_NUMBER_ZERO = "Please enter a natural number bigger equals zero.";
     private static final String EXCEPTION_INVALID_NAME = "Please enter valid name. Only letters allowed.";
@@ -26,7 +46,7 @@ public class ParserConfig implements Executable {
     private final Config config;
     private boolean active;
     private IoType currentIoType;
-    private int phase = 5;
+    private int phase = STEP_PLAYERCOUNT;
     private int currentPlayer = 1;
     private boolean quit = false;
 
@@ -48,15 +68,15 @@ public class ParserConfig implements Executable {
      * @param userInput the configuration string entered by the user.
      */
     public void parseConfig(String userInput) {
-        if (phase == 5) {
+        if (phase == STEP_PLAYERCOUNT) {
             this.parsePlayerCount(userInput);
-        } else if (phase == 4) {
+        } else if (phase == STEP_NAME) {
             this.parsePlayerName(userInput);
-        } else if (phase == 3) {
+        } else if (phase == STEP_INITIANAL_GOLD) {
             this.parseInitalGold(userInput);
-        } else if (phase == 2) {
+        } else if (phase == STEP_FINAL_GOLD) {
             this.parseTargetGold(userInput);
-        } else if (phase == 1) {
+        } else if (phase == STEP_SEED) {
             this.parseSeed(userInput);
         }
     }
@@ -197,7 +217,7 @@ public class ParserConfig implements Executable {
         this.phase -= 1;
         this.renderConfig.setPhase(this.phase);
         changeIoType();
-        if (this.phase == 0) {
+        if (this.phase == STEP_SEED - 1) {
             this.active = false;
         }
     }
