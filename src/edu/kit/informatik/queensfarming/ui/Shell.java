@@ -15,17 +15,9 @@ import java.util.Scanner;
 public class Shell {
 
     /**
-     * The constant SUFFIX_S.
+     *
      */
-    public static final String SUFFIX_S = "s";
-    /**
-     * The constant SUFFIX_ES.
-     */
-    public static final String SUFFIX_ES = "es";
-    /**
-     * An empty string used for some outputs.
-     */
-    public static final String EMPTY_STRING = "";
+    public static final String QUIT_ARGUMENT = "quit";
 
     /**
      * The constant BLANK_STRING.
@@ -73,7 +65,7 @@ public class Shell {
         ParserConfig parserConfig = new ParserConfig(config);
         Scanner scanner = new Scanner(System.in);
         //setup queensframing config
-        while (!parserConfig.isActive()) {
+        while (parserConfig.isActive()) {
             if (parserConfig.getCurrentIoType() == IoType.INPUT) {
                 try {
                     String userInput = scanner.nextLine();
@@ -85,20 +77,22 @@ public class Shell {
                 System.out.println(parserConfig.getOutputStream());
             }
         }
-        GameEngine gameEngine = new GameEngine(config);
-        while (gameEngine.isActive()) {
-            if (gameEngine.getIoType() == IoType.INPUT) {
-                try {
-                    String userInput = scanner.nextLine();
-                    String output = ParserGame.parseCommand(userInput, gameEngine);
-                    if (output != null) {
-                        System.out.println(output);
+        if (!parserConfig.quitted()) {
+            GameEngine gameEngine = new GameEngine(config);
+            while (gameEngine.isActive()) {
+                if (gameEngine.getIoType() == IoType.INPUT) {
+                    try {
+                        String userInput = scanner.nextLine();
+                        String output = ParserGame.parseCommand(userInput, gameEngine);
+                        if (output != null) {
+                            System.out.println(output);
+                        }
+                    } catch (GameException exception) {
+                        System.err.println(ERROR_START + exception.getMessage() + ERROR_END);
                     }
-                } catch (GameException exception) {
-                    System.err.println(ERROR_START + exception.getMessage() + ERROR_END);
+                } else {
+                    System.out.println(gameEngine.getOutputStream());
                 }
-            } else {
-                System.out.println(gameEngine.getOutputStream());
             }
         }
 

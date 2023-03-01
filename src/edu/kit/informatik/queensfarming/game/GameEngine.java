@@ -6,8 +6,15 @@ import edu.kit.informatik.queensfarming.entity.FarmlandDeck;
 import edu.kit.informatik.queensfarming.entity.GameTile;
 import edu.kit.informatik.queensfarming.entity.GameTileBoard;
 import edu.kit.informatik.queensfarming.entity.Vegetable;
-import edu.kit.informatik.queensfarming.game.rendering.GameEngineRender;
-import edu.kit.informatik.queensfarming.game.rendering.GameRender;
+import edu.kit.informatik.queensfarming.rendering.Render;
+import edu.kit.informatik.queensfarming.rendering.engine.RenderBuy;
+import edu.kit.informatik.queensfarming.rendering.engine.RenderHarvest;
+import edu.kit.informatik.queensfarming.rendering.engine.RenderResult;
+import edu.kit.informatik.queensfarming.rendering.engine.RenderSell;
+import edu.kit.informatik.queensfarming.rendering.engine.RenderTurn;
+import edu.kit.informatik.queensfarming.rendering.game.RenderGameBoard;
+import edu.kit.informatik.queensfarming.rendering.game.RenderBarn;
+import edu.kit.informatik.queensfarming.rendering.game.RenderMarket;
 import edu.kit.informatik.queensfarming.ui.ExecutionState;
 import edu.kit.informatik.queensfarming.ui.IoType;
 import edu.kit.informatik.queensfarming.util.Coordinates;
@@ -41,12 +48,18 @@ public class GameEngine implements Executable {
     private static final int ACTION_COUNT = 2;
     private ExecutionState executionState;
     private IoType ioType;
-    private final Config config;
-    private final Game game;
     private int currentPlayerIndex;
     private int currentActionLeft;
-    private final GameRender gameRender;
-    private final GameEngineRender gameEngineRender;
+    private final Config config;
+    private final Game game;
+    private final RenderGameBoard renderGameBoard;
+    private final RenderBarn renderBarn;
+    private final RenderMarket renderMarket;
+    private final RenderBuy renderBuyVegetable = new RenderBuy();
+    private final RenderSell renderSell = new RenderSell();
+    private final RenderHarvest renderHarvest = new RenderHarvest();
+    private final RenderTurn renderTurn;
+    private final RenderResult renderResult;
 
     /**
      * Instantiates a new Game engine.
@@ -57,8 +70,11 @@ public class GameEngine implements Executable {
         this.executionState = ExecutionState.RUNNING;
         this.config = config;
         this.game = new Game(config);
-        this.gameRender = new GameRender(this.game);
-        this.gameEngineRender = new GameEngineRender(this.config, this.game);
+        this.renderGameBoard = new RenderGameBoard(this.game);
+        this.renderBarn = new RenderBarn(this.game);
+        this.renderMarket = new RenderMarket(this.game);
+        this.renderTurn = new RenderTurn(this.game, this.config);
+        this.renderResult = new RenderResult(this.game, this.config);
         this.currentPlayerIndex = 0;
         this.currentActionLeft = ACTION_COUNT;
         this.ioType = IoType.OUTPUT;
@@ -81,8 +97,10 @@ public class GameEngine implements Executable {
         GameTileBoard playersGameBoard = this.game.getGameTileBoard(this.currentPlayerIndex);
         if (this.ownsEnoughGold(playersGameBoard, rate)) {
             this.game.buyVegetable(playersGameBoard, vegetable);
+            this.renderBuyVegetable.setItem(vegetable.getName());
+            this.renderBuyVegetable.setRate(rate);
             this.actionDone();
-            return this.gameEngineRender.outputBuyVegetable(vegetable.getName(), rate);
+            return this.renderBuyVegetable.render();
         }
         return null;
     }
@@ -106,8 +124,10 @@ public class GameEngine implements Executable {
         if (this.ownsAdjacentProperty(playersGameBoard, coordinates) && this.ownsEnoughGold(playersGameBoard, rate)) {
             Farmland farmland = farmlandDeck.takeTile();
             this.game.buyLand(playersGameBoard, farmland, coordinates);
+            this.renderBuyVegetable.setItem(farmland.getFarmlandType().getName());
+            this.renderBuyVegetable.setRate(rate);
             this.actionDone();
-            return this.gameEngineRender.outputBuyLand(farmland.getFarmlandType().getName() , rate);
+            return this.renderBuyVegetable.render();
         }
         return null;
     }
@@ -128,7 +148,7 @@ public class GameEngine implements Executable {
             if (buyAmount > stockAmount) {
                 throw new GameException(String.format(EXCEPTION_TEMPLATE_MISSING_VEGETABLE,
                     buyAmount - stockAmount, buyAmount, vegetable.getName(),
-                    GameEngineRender.getSuffix(vegetable, buyAmount)));
+                    Render.getSuffixVegetable(vegetable, buyAmount)));
             }
         }
 
@@ -139,8 +159,10 @@ public class GameEngine implements Executable {
                 this.game.sell(playersGameBoard, vegetable);
             }
         }
+        this.renderSell.setTotalSoldVegetables(totalSoldVegetables);
+        this.renderSell.setTotalGold(totalGold);
         this.actionDone();
-        return this.gameEngineRender.outputSell(totalSoldVegetables, totalGold);
+        return this.renderSell.render();
     }
 
     /**
@@ -159,8 +181,10 @@ public class GameEngine implements Executable {
                 this.game.sell(playersGameBoard, vegetable);
             }
         }
+        this.renderSell.setTotalSoldVegetables(totalSoldVegetables);
+        this.renderSell.setTotalGold(totalGold);
         this.actionDone();
-        return this.gameEngineRender.outputSell(totalSoldVegetables, totalGold);
+        return this.renderSell.render();
     }
 
     /**
@@ -224,8 +248,10 @@ public class GameEngine implements Executable {
         }
         Vegetable vegetable = farmland.getPlantedVegetable();
         this.game.harvest(playersGameBoard, coordinates, amount);
+        this.renderHarvest.setVegetable(vegetable);
+        this.renderHarvest.setAmount(amount);
         this.actionDone();
-        return this.gameEngineRender.outputHarvest(vegetable, amount);
+        return this.renderHarvest.render();
     }
 
     /**
@@ -234,7 +260,7 @@ public class GameEngine implements Executable {
      * @return the string
      */
     public String showMarket() {
-        return this.gameRender.showMarket();
+        return this.renderMarket.render();
     }
 
     /**
@@ -242,7 +268,10 @@ public class GameEngine implements Executable {
      *
      * @return the string
      */
-    public String showBarn() { return this.gameRender.showBarn(this.currentPlayerIndex); }
+    public String showBarn() {
+        this.renderBarn.setIndex(this.currentPlayerIndex);
+        return this.renderBarn.render();
+    }
 
     /**
      * Show board string.
@@ -250,7 +279,8 @@ public class GameEngine implements Executable {
      * @return the string
      */
     public String showBoard() {
-        return this.gameRender.showBoard(this.currentPlayerIndex);
+        this.renderGameBoard.setIndex(this.currentPlayerIndex);
+        return this.renderGameBoard.render();
     }
 
     /**
@@ -272,11 +302,12 @@ public class GameEngine implements Executable {
         this.ioType = IoType.INPUT;
         if (this.executionState == ExecutionState.RUNNING) {
             if (this.currentActionLeft == ACTION_COUNT) {
-                return this.gameEngineRender.printBeforeTurn(this.currentPlayerIndex);
+                this.renderTurn.setIndex(this.currentPlayerIndex);
+                return this.renderTurn.render();
             }
         } else if (this.executionState == ExecutionState.FINISHED) {
             this.executionState = ExecutionState.EXITED;
-            return this.gameEngineRender.printGameResult();
+            return this.renderResult.render();
         }
         return null;
 

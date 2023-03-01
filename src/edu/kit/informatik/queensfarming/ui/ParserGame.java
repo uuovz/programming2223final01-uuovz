@@ -14,10 +14,11 @@ import java.util.regex.Pattern;
  * The enum Parser game.
  */
 public enum ParserGame {
+
     /**
      * The Quit.
      */
-    QUIT("^quit") {
+    QUIT("^" + Shell.QUIT_ARGUMENT) {
         @Override public String execute(final String userInput, final GameEngine gameEngine) {
             gameEngine.quit();
             return null;

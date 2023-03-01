@@ -2,6 +2,7 @@ package edu.kit.informatik.queensfarming.ui;
 
 import edu.kit.informatik.queensfarming.GameException;
 import edu.kit.informatik.queensfarming.game.Config;
+import edu.kit.informatik.queensfarming.game.Executable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
  * @author uuovz
  * @version 1.0
  */
-public class ParserConfig {
+public class ParserConfig implements Executable {
 
     private static final String OUTPUT_PLAYERNUMBER = "How many players?";
     private static final String OUTPUT_PLAYERNAME = "Enter the name of player %d:";
@@ -28,6 +29,7 @@ public class ParserConfig {
     private IoType currentIoType;
     private int steps = 5;
     private int currentPlayer = 1;
+    private boolean quit = false;
 
 
     /**
@@ -37,7 +39,7 @@ public class ParserConfig {
      */
     public ParserConfig(Config config) {
         this.config = config;
-        this.active = false;
+        this.active = true;
         this.currentIoType = IoType.OUTPUT;
     }
 
@@ -86,12 +88,14 @@ public class ParserConfig {
 
 
     private void parsePlayerCount(String userInput) {
-        int num = this.getInteger(userInput);
-        if (num <= 0) {
-            throw new GameException(EXCEPTION_INVALID_NUMBER);
+        if (!this.checkQuit(userInput)) {
+            int num = this.getInteger(userInput);
+            if (num <= 0) {
+                throw new GameException(EXCEPTION_INVALID_NUMBER);
+            }
+            this.config.setPlayerCount(num);
+            this.nextStep();
         }
-        this.config.setPlayerCount(num);
-        this.nextStep();
     }
 
     private void parsePlayerName(String userInput) {
@@ -105,29 +109,45 @@ public class ParserConfig {
     }
 
     private void parseInitalGold(String userInput) {
-        int num = this.getInteger(userInput);
-        if (num < 0) {
-            throw new GameException(EXCEPTION_INVALID_NUMBER_ZERO);
+        if (!this.checkQuit(userInput)) {
+            int num = this.getInteger(userInput);
+            if (num < 0) {
+                throw new GameException(EXCEPTION_INVALID_NUMBER_ZERO);
+            }
+            this.config.setInitalGold(num);
+            this.nextStep();
         }
-        this.config.setInitalGold(num);
-        this.nextStep();
     }
 
     private void parseTargetGold(String userInput) {
-        int num = this.getInteger(userInput);
-        if (num <= 0) {
-            throw new GameException(EXCEPTION_INVALID_NUMBER);
+        if (!this.checkQuit(userInput)) {
+            int num = this.getInteger(userInput);
+            if (num <= 0) {
+                throw new GameException(EXCEPTION_INVALID_NUMBER);
+            }
+            this.config.setTargetGold(num);
+            this.nextStep();
         }
-        this.config.setTargetGold(num);
-        this.nextStep();
+
     }
 
     private void parseSeed(String userInput) {
-        Long num = this.getLong(userInput);
-        if (num != null) {
-            this.config.setSeed(num);
-            this.nextStep();
+        if (!this.checkQuit(userInput)) {
+            Long num = this.getLong(userInput);
+            if (num != null) {
+                this.config.setSeed(num);
+                this.nextStep();
+            }
         }
+
+    }
+
+    private boolean checkQuit(String userInput) {
+        if (userInput.equals(Shell.QUIT_ARGUMENT)) {
+            this.quit();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -144,7 +164,25 @@ public class ParserConfig {
      *
      * @return the boolean
      */
+    @Override
     public boolean isActive() { return this.active; }
+
+    /**
+     *
+     */
+    @Override
+    public void quit() {
+        this.active = false;
+        this.quit = true;
+    }
+
+    /**
+     *
+     * @return xwad
+     */
+    public boolean quitted() {
+        return this.quit;
+    }
 
     private void changeIoType() {
         if (this.currentIoType == IoType.INPUT) {
@@ -177,7 +215,7 @@ public class ParserConfig {
         this.steps -= 1;
         changeIoType();
         if (this.steps == 0) {
-            this.active = true;
+            this.active = false;
         }
     }
 
@@ -189,5 +227,6 @@ public class ParserConfig {
             nextStep();
         }
     }
+
 
 }

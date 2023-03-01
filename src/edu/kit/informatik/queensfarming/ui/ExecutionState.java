@@ -19,5 +19,5 @@ public enum ExecutionState {
     /**
      * The program is finished and result was printed. Programm will shut down shortly.
      */
-    EXITED;
+    EXITED,
 }
