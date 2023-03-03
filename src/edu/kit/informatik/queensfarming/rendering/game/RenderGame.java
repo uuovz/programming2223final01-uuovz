@@ -15,6 +15,9 @@ public abstract class RenderGame extends Render {
      * The constant LABEL_SEPERATOR.
      */
     protected static final String LABEL_SEPERATOR = ":";
+    /**
+     * Stringbuilder
+     */
     protected StringBuilder stringBuilder = new StringBuilder();
 
     private final Game game;
