@@ -100,7 +100,8 @@ public class RenderBarn extends RenderGame {
             for (Vegetable vegetable : sortedList) {
                 suffix = getSuffixVegetable(vegetable, 2);
                 this.maxNameLength = Math.max(maxNameLength, (vegetable.getName() + suffix).length());
-                this.maxQuantityLength = Math.max(this.maxQuantityLength, String.valueOf(barn.getStockOf(vegetable)).length());
+                this.maxQuantityLength = Math.max(this.maxQuantityLength,
+                    String.valueOf(barn.getStockOf(vegetable)).length());
             }
 
             int totalSum = 0;
