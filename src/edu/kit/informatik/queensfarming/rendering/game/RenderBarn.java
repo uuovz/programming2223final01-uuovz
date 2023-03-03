@@ -22,6 +22,8 @@ public class RenderBarn extends RenderGame {
     private static final String LABEL_SUM = "Sum" + LABEL_SEPERATOR;
     private static final String LABEL_GOLD = "Gold" + LABEL_SEPERATOR;
     private static final String SEPERATOR_GOLD = "-";
+    private int maxNameLength;
+    private int maxQuantityLength;
     private int index = 0;
 
 
@@ -43,52 +45,20 @@ public class RenderBarn extends RenderGame {
     @Override
     public String render() {
         Barn barn = this.getGame().getGameTileBoard(this.index).getBarn();
-        Countdown countdown = barn.getCountdown();
         int goldStock = barn.getGoldStock();
 
-        List<Vegetable> sortedList = this.getSortedVegetableList(barn);
-        int maxNameLength = LABEL_GOLD.length() - LABEL_SEPERATOR.length();
-        int maxQuantityLength = String.valueOf(goldStock).length();
+        this.maxNameLength = LABEL_GOLD.length() - LABEL_SEPERATOR.length();
+        this.maxQuantityLength = String.valueOf(goldStock).length();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        int remainingTurns = countdown.getRemainingTurns();
-        String suffix = remainingTurns == 1 ? EMPTY_STRING : SUFFIX_S;
+        this.stringBuilder = new StringBuilder();
         stringBuilder.append(OUTPUT_BARN);
         if (barn.vegetableInStock()) {
-            stringBuilder.append(String.format(BLANK_STRING + OUTPUT_BARN_SPOILS, remainingTurns, suffix));
-            stringBuilder.append(NEW_LINE);
-
-            for (Vegetable vegetable : sortedList) {
-                suffix = getSuffixVegetable(vegetable, 2);
-                maxNameLength = Math.max(maxNameLength, (vegetable.getName() + suffix).length());
-                maxQuantityLength = Math.max(maxQuantityLength, String.valueOf(barn.getStockOf(vegetable)).length());
-            }
-
-            int totalSum = 0;
-            for (Vegetable vegetable : sortedList) {
-                int quantity = barn.getStockOf(vegetable);
-                suffix = getSuffixVegetable(vegetable, 2);
-                stringBuilder.append(
-                        String.format("%-" + (maxNameLength + 1) + "s", (vegetable.getName() + suffix)
-                            + LABEL_SEPERATOR)
-                    )
-                    .append(String.format("%" + (maxQuantityLength + 1) + "d", quantity))
-                    .append(NEW_LINE);
-                totalSum += quantity;
-            }
-
-            stringBuilder.append(SEPERATOR_GOLD.repeat(maxNameLength + maxQuantityLength + 2))
-                .append(NEW_LINE)
-                .append(String.format("%-" + (maxNameLength + 1) + "s", LABEL_SUM))
-                .append(String.format("%" + (maxQuantityLength + 1) + "d", totalSum))
-                .append(NEW_LINE.repeat(2));
+            this.upperPart(barn);
         }
-
         else {
             stringBuilder.append(NEW_LINE);
         }
-        stringBuilder.append(String.format("%-" + (maxNameLength + 2) + "s", LABEL_GOLD))
-            .append(String.format("%" + (maxQuantityLength ) + "d", goldStock));
+        this.lowerPart(goldStock);
         return stringBuilder.toString();
     }
 
@@ -116,5 +86,46 @@ public class RenderBarn extends RenderGame {
      */
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    private void upperPart(Barn barn) {
+        List<Vegetable> sortedList = this.getSortedVegetableList(barn);
+        Countdown countdown = barn.getCountdown();
+        int remainingTurns = countdown.getRemainingTurns();
+        String suffix = remainingTurns == 1 ? EMPTY_STRING : SUFFIX_S;
+        if (barn.vegetableInStock()) {
+            stringBuilder.append(String.format(BLANK_STRING + OUTPUT_BARN_SPOILS, remainingTurns, suffix));
+            stringBuilder.append(NEW_LINE);
+
+            for (Vegetable vegetable : sortedList) {
+                suffix = getSuffixVegetable(vegetable, 2);
+                this.maxNameLength = Math.max(maxNameLength, (vegetable.getName() + suffix).length());
+                this.maxQuantityLength = Math.max(this.maxQuantityLength, String.valueOf(barn.getStockOf(vegetable)).length());
+            }
+
+            int totalSum = 0;
+            for (Vegetable vegetable : sortedList) {
+                int quantity = barn.getStockOf(vegetable);
+                suffix = getSuffixVegetable(vegetable, 2);
+                stringBuilder.append(
+                        String.format("%-" + (this.maxNameLength + 1) + "s", (vegetable.getName() + suffix)
+                            + LABEL_SEPERATOR)
+                    )
+                    .append(String.format("%" + (this.maxQuantityLength + 1) + "d", quantity))
+                    .append(NEW_LINE);
+                totalSum += quantity;
+            }
+
+            stringBuilder.append(SEPERATOR_GOLD.repeat(this.maxNameLength + this.maxQuantityLength + 2))
+                .append(NEW_LINE)
+                .append(String.format("%-" + (this.maxNameLength + 1) + "s", LABEL_SUM))
+                .append(String.format("%" + (this.maxQuantityLength + 1) + "d", totalSum))
+                .append(NEW_LINE.repeat(2));
+        }
+    }
+
+    private void lowerPart(int goldStock) {
+        stringBuilder.append(String.format("%-" + (this.maxNameLength + 2) + "s", LABEL_GOLD))
+            .append(String.format("%" + (this.maxQuantityLength ) + "d", goldStock));
     }
 }

@@ -26,6 +26,8 @@ public class RenderGameBoard extends RenderGame {
     private static final String TEMPLATE_FARMLAND_LOWER_C = "%s %s";
     private static final String SHORTCUT = "B";
     private int index = 0;
+    private GameTileBoard gameTileBoard;
+    private boolean barrier;
 
     /**
      * Creates a new `RenderGameBoard` instance with the specified game.
@@ -42,85 +44,86 @@ public class RenderGameBoard extends RenderGame {
      */
     @Override
     public String render() {
-        GameTileBoard gameTileBoard = this.getGame().getGameTileBoard(this.index);
+        this.gameTileBoard = this.getGame().getGameTileBoard(this.index);
         int maxXCoordinate = gameTileBoard.getMaxXCoordinate();
         int maxYCoordinate = gameTileBoard.getMaxYCoordinate();
         int minXCoordinate = gameTileBoard.getMinXCoordinate();
-        StringBuilder stringBuilder = new StringBuilder();
+        this.stringBuilder = new StringBuilder();
         for (int yIndex = ((maxYCoordinate * TILE_HEIGHT)) + TILE_HEIGHT - 1; yIndex >= Coordinates.ORIGIN_COORDINATES;
              yIndex--) {
             int yCoordinate = yIndex / TILE_HEIGHT;
             int xCoordinate = minXCoordinate;
-            boolean barrier = true;
+            this.barrier = true;
             while (xCoordinate <= maxXCoordinate || barrier) {
                 if (barrier) {
-                    GameTile left = gameTileBoard.getGameTile(new Coordinates(xCoordinate - 1, yCoordinate));
-                    GameTile right = gameTileBoard.getGameTile(new Coordinates(xCoordinate, yCoordinate));
-                    if (left != null || right != null) {
-                        stringBuilder.append(BARRIER);
-                    } else {
-                        stringBuilder.append(BLANK_STRING);
-                    }
-                    barrier = false;
+                    this.barrier(xCoordinate, yCoordinate);
                 } else {
                     Coordinates coordinates = new Coordinates(xCoordinate, yCoordinate);
                     Farmland farmland = gameTileBoard.getFarmland(coordinates);
                     Barn barn = gameTileBoard.getBarn();
                     if (farmland != null) {
-                        stringBuilder.append(
-                            this.farmlandRow(yIndex, gameTileBoard.getFarmland(
-                                new Coordinates(xCoordinate, yCoordinate))
-                            )
-                        );
+                        this.farmlandRow(yIndex, gameTileBoard.getFarmland(new Coordinates(xCoordinate, yCoordinate)));
                     } else if (barn.getCoordinates().equals(coordinates)) {
-                        stringBuilder.append(
-                            barnRow(yIndex, gameTileBoard.getBarn())
-                        );
+                        this.barnRow(yIndex, gameTileBoard.getBarn());
                     } else {
-                        stringBuilder.append(BLANK_STRING.repeat(TILE_WIDTH));
+                        this.stringBuilder.append(BLANK_STRING.repeat(TILE_WIDTH));
                     }
                     xCoordinate++;
                     barrier = true;
                 }
             }
             if (yIndex > 0) {
-                stringBuilder.append(NEW_LINE);
+                this.stringBuilder.append(NEW_LINE);
             }
         }
-        return stringBuilder.toString();
+        return this.stringBuilder.toString();
     }
 
-    private String barnRow(int yIndex, Barn barn) {
+    private void barrier(int xCoordinate, int yCoordinate) {
+        GameTile left = this.gameTileBoard.getGameTile(new Coordinates(xCoordinate - 1, yCoordinate));
+        GameTile right = this.gameTileBoard.getGameTile(new Coordinates(xCoordinate, yCoordinate));
+        if (left != null || right != null) {
+            this.stringBuilder.append(BARRIER);
+        } else {
+            this.stringBuilder.append(BLANK_STRING);
+        }
+        this.barrier = false;
+    }
+
+    private void barnRow(int yIndex, Barn barn) {
         int type = yIndex % TILE_HEIGHT;
         if (type == 1) {
             int remainingTurns = barn.getCountdown().getRemainingTurns();
             String remainingTurnsDisplay = remainingTurns > 0 ? String.valueOf(remainingTurns) : LABEL_NO_COUNTDOWN;
-            return String.format(TEMPLATE_BARN_MIDDLE,  SHORTCUT, remainingTurnsDisplay);
+            this.stringBuilder.append(String.format(TEMPLATE_BARN_MIDDLE,  SHORTCUT, remainingTurnsDisplay));
+            return;
         }
-        return BLANK_STRING.repeat(TILE_WIDTH);
+        this.stringBuilder.append(BLANK_STRING.repeat(TILE_WIDTH));
     }
 
-    private String farmlandRow(int tileRowIndex, Farmland farmland) {
+    private void farmlandRow(int tileRowIndex, Farmland farmland) {
         int type = tileRowIndex % TILE_HEIGHT;
         if (type == 0) {
-            return String.format(TEMPLATE_FARMLAND_UPPER, farmland.getBalance(),
-                farmland.getFarmlandType().getCapacity());
+            this.stringBuilder.append(String.format(TEMPLATE_FARMLAND_UPPER, farmland.getBalance(),
+                farmland.getFarmlandType().getCapacity()));
+            return;
         }
         if (type == 1) {
             String vegetableShortcut = farmland.getPlantedVegetable() != null
                 ? farmland.getPlantedVegetable().getShortcut() : BLANK_STRING;
-            return String.format(TEMPLATE_FARMLAND_MIDDLE, vegetableShortcut);
+            stringBuilder.append(String.format(TEMPLATE_FARMLAND_MIDDLE, vegetableShortcut));
+            return;
         }
         String shortcut = farmland.getFarmlandType().getShortcut();
         int shortcutLength = shortcut.length();
         int remainingTurns = farmland.getCountdown().getRemainingTurns();
         String remainingTurnsDisplay = remainingTurns > 0 ? String.valueOf(remainingTurns) : LABEL_NO_COUNTDOWN;
         if (shortcutLength == 1) {
-            return String.format(TEMPLATE_FARMLAND_LOWER_A, shortcut, remainingTurnsDisplay);
+            stringBuilder.append(String.format(TEMPLATE_FARMLAND_LOWER_A, shortcut, remainingTurnsDisplay));
         } else if (shortcutLength == 2) {
-            return String.format(TEMPLATE_FARMLAND_LOWER_B, shortcut, remainingTurnsDisplay);
+            stringBuilder.append(String.format(TEMPLATE_FARMLAND_LOWER_B, shortcut, remainingTurnsDisplay));
         } else {
-            return String.format(TEMPLATE_FARMLAND_LOWER_C, shortcut, remainingTurnsDisplay);
+            stringBuilder.append(String.format(TEMPLATE_FARMLAND_LOWER_C, shortcut, remainingTurnsDisplay));
         }
     }
 
