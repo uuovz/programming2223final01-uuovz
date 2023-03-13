@@ -136,11 +136,13 @@ public class ParserConfig implements Executable {
 
     private void parsePlayerName(String userInput) {
         final Matcher matcher = PLAYERNAME_PATTERN.matcher(userInput);
-        if (matcher.matches()) {
-            this.config.addPlayerName(userInput);
-            this.nextPlayerName();
-        } else {
-            throw new GameException(EXCEPTION_INVALID_NAME);
+        if (!this.checkQuit(userInput)) {
+            if (matcher.matches()) {
+                this.config.addPlayerName(userInput);
+                this.nextPlayerName();
+            } else {
+                throw new GameException(EXCEPTION_INVALID_NAME);
+            }
         }
     }
 

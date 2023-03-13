@@ -97,14 +97,17 @@ public class RenderBarn extends RenderGame {
             stringBuilder.append(String.format(BLANK_STRING + OUTPUT_BARN_SPOILS, remainingTurns, suffix));
             stringBuilder.append(NEW_LINE);
 
+            int totalSum = 0;
             for (Vegetable vegetable : sortedList) {
+                int quantity = barn.getStockOf(vegetable);
                 suffix = getSuffixVegetable(vegetable, 2);
                 this.maxNameLength = Math.max(maxNameLength, (vegetable.getName() + suffix).length());
+                totalSum += quantity;
                 this.maxQuantityLength = Math.max(this.maxQuantityLength,
-                    String.valueOf(barn.getStockOf(vegetable)).length());
+                    Math.max(String.valueOf(quantity).length(), String.valueOf(totalSum).length()));
             }
 
-            int totalSum = 0;
+
             for (Vegetable vegetable : sortedList) {
                 int quantity = barn.getStockOf(vegetable);
                 suffix = getSuffixVegetable(vegetable, 2);
@@ -114,7 +117,6 @@ public class RenderBarn extends RenderGame {
                     )
                     .append(String.format("%" + (this.maxQuantityLength + 1) + "d", quantity))
                     .append(NEW_LINE);
-                totalSum += quantity;
             }
 
             stringBuilder.append(SEPERATOR_GOLD.repeat(this.maxNameLength + this.maxQuantityLength + 2))
