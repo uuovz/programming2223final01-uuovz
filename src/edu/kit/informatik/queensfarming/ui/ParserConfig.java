@@ -68,16 +68,18 @@ public class ParserConfig implements Executable {
      * @param userInput the configuration string entered by the user.
      */
     public void parseConfig(String userInput) {
-        if (phase == STEP_PLAYERCOUNT) {
-            this.parsePlayerCount(userInput);
-        } else if (phase == STEP_NAME) {
-            this.parsePlayerName(userInput);
-        } else if (phase == STEP_INITIANAL_GOLD) {
-            this.parseInitalGold(userInput);
-        } else if (phase == STEP_FINAL_GOLD) {
-            this.parseTargetGold(userInput);
-        } else if (phase == STEP_SEED) {
-            this.parseSeed(userInput);
+        if (!this.checkQuit(userInput)) {
+            if (phase == STEP_PLAYERCOUNT) {
+                this.parsePlayerCount(userInput);
+            } else if (phase == STEP_NAME) {
+                this.parsePlayerName(userInput);
+            } else if (phase == STEP_INITIANAL_GOLD) {
+                this.parseInitalGold(userInput);
+            } else if (phase == STEP_FINAL_GOLD) {
+                this.parseTargetGold(userInput);
+            } else if (phase == STEP_SEED) {
+                this.parseSeed(userInput);
+            }
         }
     }
 
@@ -124,60 +126,48 @@ public class ParserConfig implements Executable {
 
 
     private void parsePlayerCount(String userInput) {
-        if (!this.checkQuit(userInput)) {
-            int num = this.getInteger(userInput);
-            if (num <= 0) {
-                throw new GameException(EXCEPTION_INVALID_NUMBER);
-            }
-            this.config.setPlayerCount(num);
-            this.nextStep();
+        int num = this.getInteger(userInput);
+        if (num <= 0) {
+            throw new GameException(EXCEPTION_INVALID_NUMBER);
         }
+        this.config.setPlayerCount(num);
+        this.nextStep();
     }
 
     private void parsePlayerName(String userInput) {
         final Matcher matcher = PLAYERNAME_PATTERN.matcher(userInput);
-        if (!this.checkQuit(userInput)) {
-            if (matcher.matches()) {
-                this.config.addPlayerName(userInput);
-                this.nextPlayerName();
-            } else {
-                throw new GameException(EXCEPTION_INVALID_NAME);
-            }
+        if (matcher.matches()) {
+            this.config.addPlayerName(userInput);
+            this.nextPlayerName();
+        } else {
+            throw new GameException(EXCEPTION_INVALID_NAME);
         }
     }
 
     private void parseInitalGold(String userInput) {
-        if (!this.checkQuit(userInput)) {
-            int num = this.getInteger(userInput);
-            if (num < 0) {
-                throw new GameException(EXCEPTION_INVALID_NUMBER_ZERO);
-            }
-            this.config.setInitialGold(num);
-            this.nextStep();
+        int num = this.getInteger(userInput);
+        if (num < 0) {
+            throw new GameException(EXCEPTION_INVALID_NUMBER_ZERO);
         }
+        this.config.setInitialGold(num);
+        this.nextStep();
     }
 
     private void parseTargetGold(String userInput) {
-        if (!this.checkQuit(userInput)) {
-            int num = this.getInteger(userInput);
-            if (num <= 0) {
-                throw new GameException(EXCEPTION_INVALID_NUMBER);
-            }
-            this.config.setTargetGold(num);
-            this.nextStep();
+        int num = this.getInteger(userInput);
+        if (num <= 0) {
+            throw new GameException(EXCEPTION_INVALID_NUMBER);
         }
-
+        this.config.setTargetGold(num);
+        this.nextStep();
     }
 
     private void parseSeed(String userInput) {
-        if (!this.checkQuit(userInput)) {
-            Long num = this.getLong(userInput);
-            if (num != null) {
-                this.config.setSeed(num);
-                this.nextStep();
-            }
+        Long num = this.getLong(userInput);
+        if (num != null) {
+            this.config.setSeed(num);
+            this.nextStep();
         }
-
     }
 
     private boolean checkQuit(String userInput) {
